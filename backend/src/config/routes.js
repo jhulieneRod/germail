@@ -20,5 +20,8 @@ module.exports = function (server) {
     const AuthService = require('../api/user/authService');
     openApi.post('/login', AuthService.login);
     openApi.post('/validateToken', AuthService.validateToken);
+
+    const TrackingEmailService = require('../api/email/trackingEmailService');
+    openApi.get('/abriu-email', TrackingEmailService.gravaAbriuEmail);
     // openApi.post('/esqueciSenha', AuthService.esqueciSenha);
 }
