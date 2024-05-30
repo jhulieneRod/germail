@@ -1,0 +1,10 @@
+node_modules
+*.log
+.env
+*.zip
+src/api/whatsapp
+src/api/whatsapp_gt2a
+.wwebjs_cache
+temp
+documentos
+layout

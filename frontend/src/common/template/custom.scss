@@ -1,0 +1,610 @@
+$size_media: 780px;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css");
+
+body {
+    // font-size: 0.875rem;
+    line-height: 1.42;
+    font-family:
+        "Source Sans Pro",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol";
+}
+
+.form-control {
+    height: 31px; // 31px;
+    font-size: 0.875rem; //12px;
+}
+
+// .btn{
+// font-size: 0.875rem; //14px;
+// }
+
+/*usado para funcionar edição no mac*/
+[contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+// .main_sidebar{
+//     width: 250px !important;
+// }
+
+.content_wrapper {
+    // background-color: #eef2f7 !important;
+    background-color: #f4f6f9 !important;
+
+    // mobile
+    // padding-top: 50px !important;
+    @media (min-width: $size_media) {
+        // PC
+        // padding-top: 100px !important;
+    }
+}
+
+.navbar_ {
+    background-color: #1d3586 !important;
+}
+
+// .testes{
+//     // margin-left: 230px !important;
+// }
+
+.rotate {
+    transform: rotate(-90deg);
+
+    /* Legacy vendor prefixes that you probably don't need... */
+    /* Safari */
+    -webkit-transform: rotate(-90deg);
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+    /* IE */
+    -ms-transform: rotate(-90deg);
+    /* Opera */
+    -o-transform: rotate(-90deg);
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.column_rotate {
+    background-color: red;
+    // height: 20px !important;
+    // border-collapse: collapse;
+}
+
+.vertical {
+    margin-left: -75px;
+    // position: absolute;
+    width: 215px;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg); /* Safari/Chrome */
+    -moz-transform: rotate(-90deg); /* Firefox */
+    -o-transform: rotate(-90deg); /* Opera */
+    -ms-transform: rotate(-90deg); /* IE 9 */
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.table_vertical {
+    margin-right: 50px;
+}
+
+.col_vertical {
+    max-width: 50px;
+    // height: 85px;
+    // line-height: 14px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.col_height_all {
+    background-color: red;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.main-footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+button {
+    margin-left: 5px !important;
+}
+
+.table-actions {
+    width: 150px;
+}
+
+.treeview_gt {
+    cursor: pointer;
+}
+
+li.user_header {
+    background-color: #fff !important;
+    // border: solid #ddd 1px;
+    height: 100px !important;
+}
+
+li.user_header > p {
+    color: #444 !important;
+}
+
+li.user_footer {
+    // border: solid #ddd 1px;
+    padding: 5px !important;
+    border-top: solid #ddd 1px;
+}
+
+.dropdown_menu {
+    right: 0 !important;
+    width: 200px !important;
+    z-index: 1050 !important;
+}
+
+.content_ {
+    // mobile
+    padding: 1px !important;
+    // padding-top: 45px !important; isso é para aba fixa
+    @media (min-width: $size_media) {
+        // PC
+        // padding: 10px !important;
+        padding: 5px 10px 0px 10px !important;
+        // padding-top: 50px !important; isso é para aba fixa
+    }
+}
+.tab_content {
+    padding: 2px !important;
+    padding-top: 0px !important;
+    @media (min-width: $size_media) {
+        padding: 0px 0px 0px 0px !important;
+        // padding-top: 0px !important;
+        // padding-bottom: ;
+    }
+}
+
+.content_header {
+    padding: 10px 1px 5px 1px !important;
+    margin-right: 80px;
+    @media (min-width: $size_media) {
+        padding: 5px 1px 3px 10px !important;
+        margin-right: 200px;
+    }
+}
+
+.content_header > h1 {
+    font-size: 20px;
+}
+.header_background {
+    background-color: #1d3586 !important;
+    // border-bottom: 1px solid #2c3b41 !important;
+}
+
+.box_hd {
+    margin-bottom: 5px !important;
+}
+
+.box_header {
+    padding: 5px;
+}
+
+.box_body {
+    padding: 0px !important;
+    padding-bottom: 5px !important;
+    @media (min-width: $size_media) {
+        padding: 10px !important;
+    }
+}
+
+.box_chart {
+    margin-top: 2px;
+    @media (min-width: $size_media) {
+        margin-top: 20px;
+        // border: solid 1px red;
+    }
+}
+
+.field_space {
+    margin-bottom: 5px !important;
+}
+
+.field_hd {
+    padding: 0px !important;
+}
+
+// botão para tabs INICIO =======
+.button_tabs {
+    border: 1px solid transparent;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    height: 32px;
+    padding: 5px 15px;
+}
+
+.button_tabs:hover,
+.button_tabs:focus {
+    outline: none;
+}
+
+.button_tabs:focus {
+    outline-offset: -2px;
+}
+
+.nav-tabs-custom {
+    margin-bottom: 0px !important;
+    @media (min-width: $size_media) {
+        margin-bottom: 0px !important;
+    }
+}
+
+.nav-tabs-custom > .nav-tabs > li.active:hover > button,
+.nav-tabs-custom > .nav-tabs > li.active > button {
+    background-color: #fff;
+    color: #444;
+}
+
+.nav-tabs-custom > .nav-tabs > li.active > button {
+    border-top-color: transparent;
+    border-left-color: #f4f4f4;
+    border-right-color: #f4f4f4;
+}
+
+.nav-tabs-custom > .nav-tabs > li > button,
+.nav-tabs-custom > .nav-tabs > li > button:hover {
+    background: transparent;
+    margin: 0;
+}
+
+.nav-tabs > li.active > button,
+.nav-tabs > li.active > button:focus,
+.nav-tabs > li.active > button:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid;
+    border-color: #f4f4f4 #f4f4f4 transparent;
+}
+
+.nav-tabs-custom > .nav-tabs > li:first-of-type.active > button {
+    border-left-color: transparent;
+}
+
+// botão para tabs FINAL =======
+
+.a_button {
+    cursor: pointer;
+    height: 52px;
+}
+
+.button_link_a {
+    background-color: transparent;
+    color: #007bff;
+    border: 0;
+    padding: 0;
+}
+
+.button_link_a:hover {
+    color: #1d3586;
+}
+
+.button_link {
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin: 0px;
+}
+.button_link:hover,
+.button_link:focus {
+    outline: none;
+}
+
+.button_link:focus {
+    outline-offset: -2px;
+}
+
+.button_user {
+    border-left: 1px solid #d2d6de;
+}
+
+.button_user:hover {
+    color: #999;
+}
+
+.button_sair {
+    padding: 4px 10px !important;
+}
+
+.button_down {
+    width: 100%;
+}
+
+.button_Refresh {
+    // float: right;
+    height: 27px;
+    padding: 0px 7px;
+    margin: 0px;
+}
+
+.button_Exportar {
+    float: right;
+    height: 30px;
+    padding: 0px 7px;
+    margin: 1px;
+    margin-right: 100px;
+    // margin-right: 10px;
+    margin-top: -35px;
+    @media (min-width: $size_media) {
+        margin-top: -42px;
+    }
+}
+
+.button_Refresh_dashboard {
+    float: right;
+    height: 30px;
+    padding: 0px 7px;
+    margin: 1px;
+    margin-top: -35px;
+    margin-right: 10px;
+    @media (min-width: $size_media) {
+        margin-top: -37px;
+        margin-right: 0px;
+    }
+}
+
+.button_sm_Refresh {
+    float: right;
+    // height: 30px;
+    padding: 0px 7px !important;
+    margin-bottom: 1px;
+}
+
+.button_filter_dashboard {
+    float: right;
+    height: 30px;
+    padding: 0px 7px;
+    margin: 1px;
+    margin-top: -35px;
+    margin-right: 50px;
+    z-index: 1000;
+    @media (min-width: $size_media) {
+        margin-top: -37px;
+        margin-right: 100px;
+    }
+}
+
+.button_box_title_dashboard {
+    float: right;
+    height: 30px;
+    padding: 0px 7px;
+    margin-bottom: -4px;
+    margin-top: -5px;
+    margin-right: 0px;
+}
+
+.content_header_dashboard {
+    position: static !important;
+}
+
+/*===>> tabs scroll inicio <<===*/
+$cor_barra_scroll: #d4d6d8;
+// $cor_btn_sel: #eef2f7;
+$cor_btn_sel: #f4f6f9;
+
+.tabs_tabs {
+    border: 0px !important;
+    // height: 100%;
+    // background-color: red;
+}
+
+.tabs_pane {
+    background-color: $cor_btn_sel;
+    border: 0px !important;
+    border-top: 0px;
+    // margin: 0px 5px;
+}
+
+.tabs_bar {
+    border: 0px !important;
+    background-color: $cor_barra_scroll;
+
+    // isso deixa a aba fixa, fica bom mas o menu de usuáro fica atraz e o z-index não resolve
+    // position: fixed !important;
+    // z-index: 1030 !important;
+    // display: block !important;
+}
+
+$tab_height: 35px;
+
+.tabs_tab_btn {
+    background-color: $cor_barra_scroll;
+    cursor: pointer;
+    position: relative;
+    outline-offset: -2px;
+    height: $tab_height;
+    padding-bottom: 9px !important;
+    padding-right: 25px;
+    margin: 2px 0 0 0;
+    border: 0px;
+    color: #444;
+    border-right: #b6b6b6 solid 1px;
+    border-radius: 0px;
+    // border-top-right-radius: 0px;
+}
+
+.tabs_tab_btn:hover,
+.tabs_tab_btn:focus {
+    outline: none !important;
+}
+
+// .tabs_tab_btn:focus{
+//     background-color: $cor_btn_sel;
+//     border-top: 3px solid transparent;
+//     border-top-color: #3c8dbc;
+//     outline-offset: -2px;
+//     height: 35px;
+//     padding-bottom: 8px !important;
+//     border-right: $cor_btn_sel solid 1px;
+// }
+
+div[data-extra="tabs"] > div[role="tablist"] {
+    background-color: $cor_barra_scroll;
+}
+
+div[data-extra="tabs"] > div[role="tablist"] > div > div > div {
+    background-color: $cor_barra_scroll !important;
+}
+
+div[data-extra="tabs"] > div > div > div > div > div[role="tab"] {
+    border-top: 3px solid transparent;
+    padding: 0px;
+    height: $tab_height;
+    margin: 0px 0px;
+    margin-top: 5px;
+    background-color: $cor_barra_scroll !important;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+div[data-extra="tabs"] > div > div > div > div > div[role="tab"][aria-selected="true"] {
+    border-top: 3px solid transparent;
+    border-top-color: #3c8dbc;
+    background-color: $cor_btn_sel !important;
+    height: $tab_height;
+    margin-left: -1px;
+    margin-bottom: 0px !important;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+div[data-extra="tabs"] > div > div > div > div > div[role="tab"][aria-selected="true"] > button {
+    background-color: $cor_btn_sel;
+    // outline-offset: -2px;
+    // height: $tab_height;
+    // padding-bottom: 9px !important;
+    border-right: $cor_btn_sel solid 0px;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+div[data-extra="tabs"] > div > div > div > div:first-of-type > div[role="tab"] > button {
+    // outline-offset: -2px;
+    // height: $tab_height;
+    // padding-bottom: 9px !important;
+    padding-left: 11px;
+    padding-right: 10px;
+}
+
+.rc-tabs-ink-bar {
+    // essa classe é igual do componete e foi reescrita para não gerar a barra em baixo
+    height: 0px !important;
+}
+
+// div[data-extra="tabbar"]>div>div>div>div>div>div[role="tab"]:hover{
+//     // border: red solid 1px;
+// }
+
+// div[data-extra="tabbar"]>div>div>div>div>div>div[role="tab"]:first-of-type{
+//     // padding-left: 5px;
+// }
+
+// div[data-extra="tabbar"]>div>div>div>div>div>div[role="tab"]:last-of-type{
+//     // margin-right: 0px;
+// }
+
+/*===>> tabs scroll final <<===*/
+
+.panel_body {
+    justify-content: center !important;
+    align-items: center !important;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.panel_body_grid {
+    padding: 0px;
+}
+
+.panel_heading_grid {
+    padding: 7px 10px;
+}
+
+.grid_hd {
+    padding: 0px 0px !important;
+}
+
+.grid_hd_left {
+    padding-right: 8px !important;
+}
+
+.input_numeric_right {
+    text-align: right;
+}
+
+.dropdown_menu_versao {
+    background-color: #ddd !important;
+    padding: 2px 10px;
+    width: 100% !important;
+    // text-align: right;
+    text-align: center;
+    // border-top: #b6b6b6 solid 1px;
+}
+
+.sidebar a {
+    font-weight: bold !important;
+}
+
+.nav-treeview > .nav-item > .nav-link {
+    font-weight: normal !important;
+}
+
+.editortohtml p {
+    // background-color: red;
+    // padding: 0px !important;
+    margin-bottom: 0px;
+}
+
+.public-DraftStyleDefault-block {
+    margin: 0px;
+}
+
+.box_icon {
+    // background-color: #153D77 !important;
+    border-radius: 50% !important;
+    color: #fff;
+    align-items: center;
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+}
+
+// .nav-item ul::before {
+//     content: '';
+//     height: 100%;
+//     opacity: 1;
+//     width: 3px;
+//     background: #88b1c9;
+//     position: absolute;
+//     left: 18px;
+//     top: 0;
+//     border-radius: 15px;
+//   }

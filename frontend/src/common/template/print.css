@@ -1,0 +1,72 @@
+.header_report {
+  display: none;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  .header_report {
+    display: block;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+  .page {
+    width: 210mm;
+    min-height: 296mm;
+    margin: 0mm auto;
+    margin-top: 0mm !important;
+  }
+  .subpage {
+    padding: 1cm;
+    padding-top: 1cm !important;
+    height: 296mm !important;
+  }
+  .grid_cell_white {
+    background: rgb(255, 255, 255) !important;
+  }
+  .grid_cell_red {
+    background: rgb(254, 0, 0) !important;
+  }
+  .grid_cell_blue {
+    background: rgb(0, 112, 192) !important;
+  }
+  .grid_cell_green {
+    background: rgb(0, 176, 80) !important;
+  }
+  .grid_cell_yellow {
+    background: rgb(255, 192, 0) !important;
+  }
+  .table_vertical {
+    margin-right: 20px !important;
+  }
+  .table_border {
+    width: 300px !important;
+    min-width: 300px !important;
+  }
+  .table_border .rt-tbody {
+    min-width: 300px !important;
+  }
+  .table_border .rt-tr-group {
+    height: 28px !important;
+    width: 48px !important;
+  }
+  .table_border .rt-td {
+    height: 28px !important;
+    width: 48px !important;
+  }
+  .table_border .rt-th {
+    height: 28px !important;
+    width: 48px !important;
+  }
+  .table_border .rt-td {
+    height: 28px !important;
+    width: 48px !important;
+  }
+  .panel-heading {
+    color: #31708f !important;
+    background-color: #d9edf7 !important;
+    border-color: #bce8f1 !important;
+  }
+}/*# sourceMappingURL=print.css.map */

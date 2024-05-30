@@ -1,0 +1,36 @@
+.wrapper {
+    background-color: #f4f6f9 !important;    
+    /* height: 100vh; */
+}
+
+.login_page {
+    background-image: url('../common/image/fundo.jpg')!important;
+}
+
+.login-box-body {
+    background-color: #eee;
+}
+
+.login-box button {
+    margin-left: 0px;
+}
+
+.login-box a:hover {
+    cursor: pointer;
+}
+
+.img_logo_login {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px;
+}
+
+.login_pass {
+    /* border-left: 0px; */
+    cursor: pointer;
+}
+
+.login_input{
+    padding-bottom: 6px;
+}

@@ -1,0 +1,227 @@
+$size_media: 768px;
+
+.grid_size {
+    // mobile
+    padding: 0px 1px !important;
+    @media (min-width: $size_media) {
+        // PC
+        padding: 0px 15px !important;
+    }
+}
+
+.rt-td {
+    height: 40px;
+}
+
+.-previous{
+    padding-right: 10px;
+    flex: none !important;
+    @media (min-width: $size_media) {
+        padding-right: 10px;
+        flex: 1 1 !important;
+    }
+}
+.-next {
+    padding-right: 10px;
+    flex: none !important;
+    @media (min-width: $size_media) {
+        padding-right: 10px;
+        flex: 1 1 !important;
+    }
+}
+
+.-btn {
+    // altera as propriedades padrões do botão do react-table
+    border: 1px solid transparent !important;
+    background-color: #1D3586 !important;
+    border-color: #1D3586 !important;
+    color: #ffffff !important;
+}
+.-btn:hover {
+    // altera as propriedades padrões do botão do react-table
+    background-color: #20658d !important;
+    border-color: #193b58 !important;
+}
+
+.grid_button_all{
+    padding: 3px 5px !important;
+    width:100%;
+    margin: 0px;    
+}
+
+.grid_button_pive_preco:hover{  
+    background-color: rgb(245, 245, 110) !important;
+}
+
+.grid_button_pive_preco:active{  
+    background-color: rgb(245, 245, 110) !important;
+}
+
+.grid_button_pive_preco:focus{  
+    background-color: rgb(245, 245, 110) !important;
+}
+
+.grid_search_button {
+    margin: 2px 2px !important;
+    height: 24px !important;
+    width: 30px !important;
+    padding: 2px !important;
+}
+
+.header_left {
+    text-align: left !important;
+}
+
+.header_right {
+    text-align: right !important;
+}
+.-header {
+    box-shadow: none !important;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    // background-color: #f5f5f5;
+}
+
+.column_icon {
+    padding: 0px !important;
+    height: 28px;
+}
+
+.column_grid {
+    padding: 4px 4px !important;
+    height: 28px !important;
+    // width : 40px !important;
+}
+
+.column_center {
+    text-align: center !important;
+}
+
+.column_select {
+    padding: 3px !important;
+}
+
+.column_edit {
+    border: #cccccc solid 1px !important;
+}
+
+.column_date_edit {
+    border: #cccccc solid 1px !important;
+    background-color: #fff !important;
+    padding: 0px 2px 0px 2px !important;
+    height: 22px !important;
+    width: 135px !important;
+}
+
+.column_right {
+    text-align: right !important;
+}
+
+.column_text {
+    overflow: visible !important;
+    display: table-row !important;
+    height: 100% !important;
+}
+
+.column_text_edit {
+    // border: #cccccc solid 1px !important;
+    // background-color: #fff !important;
+    // padding: 0px 2px 0px 2px;
+
+    width: 100%;
+    height: 100%;
+    text-align: right;
+    padding: 0px 5px 0px 2px;
+    border: #cccccc solid 1px !important;
+}
+
+.column_all {
+    padding: 0px !important;
+}
+
+.input_filter {
+    width: 100%;
+}
+
+.header_flex {
+    // width: 100% !important;
+
+    // border: 2px solid red !important;
+}
+
+.column_flex {
+    // width: 400px !important;
+    // width: 100% !important;
+    // border: 2px solid rgba(0, 0, 255, 0.815) !important;
+}
+
+.class_tableModulo_id {
+    width: 60px !important;
+}
+
+// .ReactTable .rt-tbody .rt-tr-group
+
+
+.table_border {
+    border: 0px;
+    width: 362px;
+}
+
+$height_cell: 35px;
+$width_cell: 48px;
+// $height_cell: 35px;
+
+.table_border .rt-tr-group {
+    // border-color: #454545 !important;
+    border: 0px !important;
+    height: $height_cell !important;
+    // width: $width_cell !important;
+}
+
+.table_border .rt-td {
+    // border-color: #454545 !important;
+    border: 0px !important;
+    height: $height_cell !important;
+    // width: $width_cell !important;
+}
+
+.table_border .rt-th {
+    // border-color: #454545 !important;
+    border: 0px !important;
+    height: $height_cell !important;
+    // width: $width_cell !important;
+    // font-size: 15px !important;
+    font-weight: bold !important;
+}
+
+.table_border .rt-td {
+    // border-color: #454545 !important;
+    border: 0px !important;
+    height: $height_cell !important;
+    // width: $width_cell !important;
+}
+
+.table_border .-header {
+    // border-color: #454545 !important;
+    display: none;
+    // border: 0px !important;
+    // height: $height_cell !important;
+    // width: $width_cell !important;
+}
+
+
+.grid_cell_white {
+    background: rgb(255,255,255);
+}
+.grid_cell_red {
+    background: rgb(254,0,0);
+}
+.grid_cell_blue {
+    background: rgb(0,112,192);
+}
+.grid_cell_green {
+    background: rgb(0,176,80);
+}
+.grid_cell_yellow {
+    background: rgb(255,192,0);
+}
