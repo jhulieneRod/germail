@@ -48,6 +48,7 @@ const sendEmail = async (json) => {
         destinatarios.split(',').map(async (destinatario) => {
             
             mailOptions.to = destinatario;
+            mailOptions.html = mailOptions.html.replace('{{email_usuario}}', destinatario);
 
             await transporter.sendMail(mailOptions)
             .then((result) => {
