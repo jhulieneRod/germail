@@ -4,7 +4,7 @@
     "description": "GerMail",
     "private": true,
     "homepage": "http://previasite.com/",
-    "proxy": "http://localhost:14105",
+    "proxy": "http://77.37.69.246:14105/",
     "dependencies": {
         "@tanstack/react-query": "^5.17.1",
         "@tanstack/react-table": "^8.11.2",
