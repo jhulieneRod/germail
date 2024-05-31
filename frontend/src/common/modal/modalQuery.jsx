@@ -31,11 +31,11 @@ const ModalQuery = props => {
             <Modal.Body className='modal-body'>
                 <div
                     className={`card-body pb-0 pt-0 pl-1 pr-2 overflow-auto`}
-                    style={{ height: 533 }}
+                    style={{ minHeight: 533 }}
                 >
                     <Row>
                         <ReactTableV8
-                            id='clienteList'
+                            id='modalList'
                             data={props.data}
                             loading={props.loading}
                             columns={props.columns}
@@ -43,9 +43,6 @@ const ModalQuery = props => {
                         />
                     </Row>
                 </div>
-                {/* <CardBodyScroll className='p-1' height={566}>
-                    
-                </CardBodyScroll> */}
             </Modal.Body>
 
             <If condicao={props.footer}>

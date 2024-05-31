@@ -3,24 +3,20 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Grid from '../layout/grid';
 import ButtonLink from '../form/buttonLink';
-// import { getWidgetsPesquisar } from '../../dashboard/dashboardActions';
-// import DashboardWidgetsList from '../../dashboard/dashboardWidgetList';
+import LogDestinatarioEmailList from '../../logDestinatarioEmail/logDestinatarioEmailList';
 
-const ValueBox4 = props => {
+const ValueBoxEmail = props => {
 
     const [show, setShow] = useState(false); 
 
-    const data = {
-        labels: (props.title) ? props.title || '' : '',
-        datasets: [{
-            backgroundColor: 'rgb(153, 102, 255)',
-            borderColor: 'rgb(153, 102, 255)',
-        }]
-    };
-
     return (
         <>
-            {/* <DashboardWidgetsList title={`Consulta ${props.title}`} data={data} show={show} onHide={() => setShow(false)} /> */}
+            <LogDestinatarioEmailList
+                title={props.title}
+                show={show}
+                onHide={() => setShow(false)} 
+                tipo={props.tipo ?? 0}
+            />
             <Grid cols={props.cols}>
                 <div className="small-box" 
                     style={
@@ -30,7 +26,7 @@ const ValueBox4 = props => {
                         }
                     }>
                     <div className="inner">
-                        <h3>{props.value}</h3>
+                        <h3>{props.valor}</h3>
                         <p>{props.title}</p>
                     </div>
                     <div className="icon">
@@ -50,4 +46,4 @@ const ValueBox4 = props => {
     )
 }
 
-export default ValueBox4
+export default ValueBoxEmail

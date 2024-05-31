@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { getList } from './logDestinatarioEmailActions'
-import ReactTableV8 from '../common/grid/gridReactTableV8';
-import { CardBodyTable } from '../common/layout/card';
+import ModalQuery from '../common/modal/modalQuery';
 
 const LogDestinatarioEmailList = (props) => {
 
    const [dataList, setDataList] = useState(props.list || []);
+   const [tipo] = useState(props.tipo ?? 0);
 
     useEffect(() => {
-        setDataList(props.list);
-    }, [props.list])
-
-    useEffect(() => {
-        props.getList();
+        getList(tipo, setDataList);
     }, [])
 
     const columnsV8 = [
@@ -26,9 +20,23 @@ const LogDestinatarioEmailList = (props) => {
             headerClassName: 'header_left',
         },
         {
-            accessorKey: 'destinatario',
-            id: 'destinatario',
-            header: 'Destinatário',
+            accessorKey: 'lead',
+            id: 'lead',
+            header: 'Lead - Código',
+            size: 100,
+            headerClassName: 'header_left',
+        },
+        {
+            accessorKey: 'destinatario_nome',
+            id: 'destinatario_nome',
+            header: 'Lead - Nome',
+            minSize: 50,
+            headerClassName: 'header_left',
+        },
+        {
+            accessorKey: 'destinatario_email',
+            id: 'destinatario_email',
+            header: 'Lead - E-mail',
             minSize: 50,
             headerClassName: 'header_left',
         },
@@ -38,25 +46,20 @@ const LogDestinatarioEmailList = (props) => {
             header: 'Ação',
             minSize: 50,
             headerClassName: 'header_left',
+            isVisible: false
         },
     ]
 
     return (
-        <CardBodyTable>
-            <ReactTableV8
-                id='logDestinatarioEmailList'
-                data={dataList}
-                columns={columnsV8}
-                updateListFn={props.getList}
-                showPagination={false}
-                showFilter={false}
-            />
-        </CardBodyTable>
+        <ModalQuery
+            columns={columnsV8}
+            data={dataList}
+            loading={false}
+            show={props.show}
+            onHide={props.onHide}
+            title={props.title ?? 'Consulta E-mail'}
+        />
     )
 }
-const mapStateToProps = state => ({ 
-    list: state.logDestinatarioEmailCad.list,
-    stateReq: state.logDestinatarioEmailCad.stateReq 
-})
-const mapDispatchToProps = dispatch => bindActionCreators({ getList }, dispatch)
-export default connect(mapStateToProps, mapDispatchToProps)(LogDestinatarioEmailList)
+
+export default LogDestinatarioEmailList;

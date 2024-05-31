@@ -8,6 +8,7 @@ module.exports = function (server) {
 
     protectedApi.use(auth);
 
+    const Dashboard         = require('../api/dashboard/dashboardService')(protectedApi);
     const Configuracao      = require('../api/configuracao/configuracaoService')(protectedApi);
     const Tag               = require('../api/tag/tagService')(protectedApi);
     const Lead              = require('../api/lead/leadService')(protectedApi);
@@ -24,5 +25,4 @@ module.exports = function (server) {
 
     const TrackingEmailService = require('../api/email/trackingEmailService');
     openApi.get('/abriu-email', TrackingEmailService.gravaAbriuEmail);
-    // openApi.post('/esqueciSenha', AuthService.esqueciSenha);
 }

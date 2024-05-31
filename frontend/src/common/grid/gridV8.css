@@ -164,9 +164,14 @@ input[type=number] {
 }
 
 .pagination {
-  width: 100% !important;
+  width: 98% !important;
   display: inline-block;
-  margin: 2px 0px 1px 0px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.card-body{
+  position: relative!important;
 }
 
 @media (pointer: coarse) {

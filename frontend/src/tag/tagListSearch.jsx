@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getList } from './tagActions';
 import ReactTableV8 from '../common/grid/gridReactTableV8';
-import { Modal } from 'react-bootstrap';
+import { Modal, Row } from 'react-bootstrap';
 import Button from '../common/form/button';
 
 class TagListSearch extends Component {
@@ -77,13 +77,20 @@ class TagListSearch extends Component {
                     </Modal.Header>
 
                     <Modal.Body className='modal-body'>
-                        <ReactTableV8
-                            id='tagList'
-                            data={tags}
-                            columns={columns}
-                            updateListFn={this.props.getList}
-                            onClick = {this.props.onSelect}
-                        />                        
+                        <div
+                            className={`card-body pb-0 pt-0 pl-1 pr-2 overflow-auto`}
+                            style={{ minHeight: 533 }}
+                        >
+                            <Row>
+                                <ReactTableV8
+                                    id='tagList'
+                                    data={tags}
+                                    columns={columns}
+                                    updateListFn={this.props.getList}
+                                    onClick = {this.props.onSelect}
+                                />                    
+                            </Row>  
+                        </div>  
                     </Modal.Body>
 
                     <Modal.Footer className='modal-header'>
