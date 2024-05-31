@@ -10,6 +10,7 @@ import CadConfiguracao from '../../configuracao/configuracao';
 import CadTag from '../../tag/tag';
 import CadLead from '../../lead/lead';
 import CadEmail from '../../email/email';
+import Fluxo from '../../fluxo/fluxo';
 
 /** USADO PARA O MENU FUNCIONAR CORRETAMENTE */
 var treeViewGT;
@@ -44,6 +45,7 @@ class Menu extends Component {
                     </MenuTree>
                     <MenuTree label='E-mail' name='subemail' icon='envelope'>
                        <MenuItemClick name='cademail' label='Cadastro' icon='' onClick={(e, menu) => { this.props.addTabs(e, menu, <CadEmail />) }} />
+                       <MenuItemClick name='fluxoemail' label='Fluxo' icon='' onClick={(e, menu) => { this.props.addTabs(e, menu, <Fluxo />) }} />
                     </MenuTree>
                 </ul>
             </nav>
