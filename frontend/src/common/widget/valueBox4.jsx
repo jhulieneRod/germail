@@ -13,10 +13,8 @@ const ValueBox4 = props => {
     const data = {
         labels: (props.title) ? props.title || '' : '',
         datasets: [{
-            //label: 'Avisos enviados',
             backgroundColor: 'rgb(153, 102, 255)',
             borderColor: 'rgb(153, 102, 255)',
-            //data: (props.list) ? props.list.afastamento : [],
         }]
     };
 
@@ -44,7 +42,7 @@ const ValueBox4 = props => {
                             props.getWidgetsPesquisar({ tipo: props.tipo });
                             setShow(true)
                         }}>
-                        Ver Processos <i className="fas fa-arrow-circle-right"></i>
+                        Visualizar <i className="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </Grid>

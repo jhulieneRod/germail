@@ -9,14 +9,6 @@ const DashboardWidgetsList = (props) => {
 
     const [dataList, setDataList] = useState([{id: 1, descricao: 'Processo Teste', prazo: '10/08/2024'}]);
 
-    // useEffect(() => {
-    //     setDataList([{id: 1, descricao: 'Processo Teste', prazo: '10/08/2024'}]);
-    // }, [props.show])
-
-    // useEffect(() => {
-    //     setDataList([{id: 1, descricao: 'Processo Teste', prazo: '10/08/2024'}]);
-    // }, [props.list])
-
     function removerProcesso(data) {
         msgQuestion('Deseja realmente excluir?')
             .then((result) => {

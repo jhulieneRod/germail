@@ -12,10 +12,10 @@ import CadTag from '../tag/tagReducer';
 import CadLead from '../lead/leadReducer';
 import CadEmail from '../email/emailReducer';
 import CadDestinatarioEmail from '../destinatarioEmail/destinatarioEmailReducer';
+import CadLogDestinatarioEmail from '../logDestinatarioEmail/logDestinatarioEmailReducer';
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
-    // comboboxCad : ComboBox,
     tab: TabReducer,
     form: formReducer,
     toastr: toastrReducer,
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
     emailCad: CadEmail,
     leadCad: CadLead,
     destinatarioEmailCad: CadDestinatarioEmail,
+    logDestinatarioEmailCad: CadLogDestinatarioEmail,
 })
 
 export default rootReducer

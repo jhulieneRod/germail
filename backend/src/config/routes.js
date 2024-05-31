@@ -13,6 +13,7 @@ module.exports = function (server) {
     const Lead              = require('../api/lead/leadService')(protectedApi);
     const Email             = require('../api/email/emailService')(protectedApi);
     const DestinatarioEmail = require('../api/destinatario_email/destinatarioEmailService')(protectedApi);
+    const LogDestinatarioEmail = require('../api/log_destinatario_email/logDestinatarioEmailService')(protectedApi);
 
     const openApi = express.Router();
     server.use('/germail', openApi);
