@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const knex = require('../../config/database');
-import { format } from 'date-fns';
+const format = require('date-fns');
 
 const sendEmail = async (json) => {
 

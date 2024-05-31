@@ -1,5 +1,5 @@
 const knex = require('../../config/database');
-import { format } from 'date-fns';
+const format = require('date-fns');
 
 const gravaAbriuEmail = (req, res, next) => {
     let dados = JSON.parse(atob(req.query.dados));
