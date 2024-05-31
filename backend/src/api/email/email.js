@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const knex = require('../../config/database');
+import { format } from 'date-fns';
 
 const sendEmail = async (json) => {
 
@@ -45,7 +47,7 @@ const sendEmail = async (json) => {
             html: json.conteudo,
         };
 
-        destinatarios.split(',').map(async (destinatario) => {
+        await destinatarios.split(',').map(async (destinatario) => {
 
             let aDestinatario = destinatario.split(':::');
             let destinatarioEmail = aDestinatario[1];
@@ -60,11 +62,21 @@ const sendEmail = async (json) => {
             let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
             mailOptions.html = json.conteudo.replace('</body>', `${imgTrack} </body>`);
             mailOptions.to = destinatarioEmail;
-
+            let datahora = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
             await transporter.sendMail(mailOptions)
-            .then((result) => {
-                console.log('Email enviado: ' + destinatarioEmail);
-                resultSend.success = true;
+            .then(async (result) => {                
+                let values = {...dados, datahora, acao: 1}
+
+                await knex('log_destinatario_email')
+                .insert(values)
+                .then( async (dados) => {
+                    resultSend.success = true;
+                    console.log('Email enviado: ' + destinatarioEmail);
+                })
+                .catch(function (error) {
+                    resultSend.error = 'Não enviado:' + error
+                });
+
             })
             .catch((error) => {
                 console.log('Não ENVIADO', error);

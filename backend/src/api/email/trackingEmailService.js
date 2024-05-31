@@ -1,7 +1,20 @@
+const knex = require('../../config/database');
+import { format } from 'date-fns';
 
 const gravaAbriuEmail = (req, res, next) => {
     let dados = JSON.parse(atob(req.query.dados));
-    console.log('Email opened by:', dados);
+    let datahora = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+    let values = {...dados, datahora, acao: 2}
+
+    knex('log_destinatario_email')
+    .insert(values)
+    .then((dados) => {
+        console.log('Log Incluido: ', values);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
     res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-Length': 43
