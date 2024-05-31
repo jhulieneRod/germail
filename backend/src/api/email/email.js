@@ -10,7 +10,7 @@ const sendEmail = async (json) => {
     let usuario = 'jhuliene.rodrigues@gmail.com';
     let senha = 'ceuu gjvb mnpm kqvi';
 
-    if ((json.email != '') && (json.email != undefined)) {
+    if ((json.destinatario != '') && (json.destinatario != undefined)) {
 
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -37,7 +37,7 @@ const sendEmail = async (json) => {
             }
         });
 
-        let destinatarios = json.email;
+        let destinatarios = json.destinatario;
         let mailOptions = {
             from: 'Germail - Gerenciamento de E-mails <'+usuario+'>',
             to: '',
@@ -46,18 +46,31 @@ const sendEmail = async (json) => {
         };
 
         destinatarios.split(',').map(async (destinatario) => {
+
+            let aDestinatario = destinatario.split(':::');
+
+            let destinatarioEmail = aDestinatario[1];
+
+            let dados = {
+                id_lead: aDestinatario[0],
+                id_email: json.id
+            }
+
+            let base64Dados = btoa(JSON.stringify(dados));
             
-            mailOptions.to = destinatario;
-            mailOptions.html = mailOptions.html.replace('{{email_usuario}}', destinatario);
+            mailOptions.to = destinatarioEmail;
+
+            let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
+            mailOptions.html = mailOptions.html.replace('</body>', `${imgTrack} </body>`);
 
             await transporter.sendMail(mailOptions)
             .then((result) => {
-                console.log('Email enviado: ' + destinatario);
+                console.log('Email enviado: ' + destinatarioEmail);
                 resultSend.success = true;
             })
             .catch((error) => {
                 console.log('Não ENVIADO', error);
-                console.log('Email COM ERRO: ', destinatario);
+                console.log('Email COM ERRO: ', destinatarioEmail);
                 resultSend.error = 'Não enviado:' + error
             });
         });

@@ -89,9 +89,10 @@ module.exports = function (route) {
         const id = req.params.id;
 
         const sqlCommand = `SELECT 
+                                e.id,
                                 e.assunto, 
                                 e.conteudo, 
-                                GROUP_CONCAT(l.email) as email 
+                                GROUP_CONCAT(concat(l.id, ':::', l.email)) as destinatario 
                             FROM destinatario_email de
                             JOIN email e
                               on de.id_email = e.id 

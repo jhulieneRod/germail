@@ -1,6 +1,7 @@
 
 const gravaAbriuEmail = (req, res, next) => {
-    console.log('Email opened by:', req.query.email);
+    let dados = JSON.parse(atob(req.query.dados));
+    console.log('Email opened by:', dados);
     res.writeHead(200, {
         'Content-Type': 'image/png',
         'Content-Length': 43
