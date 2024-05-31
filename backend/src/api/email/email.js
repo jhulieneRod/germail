@@ -45,13 +45,9 @@ const sendEmail = async (json) => {
             html: json.conteudo,
         };
 
-        let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados={{dados_base64}}" alt="." style="display:none;">`;
-        mailOptions.html = mailOptions.html.replace('</body>', `${imgTrack} </body>`);
-
         destinatarios.split(',').map(async (destinatario) => {
 
             let aDestinatario = destinatario.split(':::');
-
             let destinatarioEmail = aDestinatario[1];
 
             let dados = {
@@ -60,9 +56,10 @@ const sendEmail = async (json) => {
             }
 
             let base64Dados = btoa(JSON.stringify(dados));
-            
-            mailOptions.to = destinatarioEmail;            
-            mailOptions.html = mailOptions.html.replace('{{dados_base64}}', base64Dados);
+
+            let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
+            mailOptions.html = json.conteudo.replace('</body>', `${imgTrack} </body>`);
+            mailOptions.to = destinatarioEmail;
 
             await transporter.sendMail(mailOptions)
             .then((result) => {
