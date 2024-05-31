@@ -1,9 +1,9 @@
 const knex = require('../../config/database');
-const format = require('date-fns');
+const DateFormat = require('date-fns');
 
 const gravaAbriuEmail = (req, res, next) => {
     let dados = JSON.parse(atob(req.query.dados));
-    let datahora = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+    let datahora = DateFormat.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
     let values = {...dados, datahora, acao: 2}
 
     knex('log_destinatario_email')

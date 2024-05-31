@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const knex = require('../../config/database');
-const format = require('date-fns');
+const DateFormat = require('date-fns');
 
 const sendEmail = async (json) => {
 
@@ -62,7 +62,7 @@ const sendEmail = async (json) => {
             let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
             mailOptions.html = json.conteudo.replace('</body>', `${imgTrack} </body>`);
             mailOptions.to = destinatarioEmail;
-            let datahora = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+            let datahora = DateFormat.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
             await transporter.sendMail(mailOptions)
             .then(async (result) => {                
                 let values = {...dados, datahora, acao: 1}
