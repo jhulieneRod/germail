@@ -13,6 +13,7 @@ module.exports = function (server) {
     const Tag               = require('../api/tag/tagService')(protectedApi);
     const Lead              = require('../api/lead/leadService')(protectedApi);
     const Email             = require('../api/email/emailService')(protectedApi);
+    const Sequencia         = require('../api/sequencia/sequenciaService')(protectedApi);
     const DestinatarioEmail = require('../api/destinatario_email/destinatarioEmailService')(protectedApi);
     const LogDestinatarioEmail = require('../api/log_destinatario_email/logDestinatarioEmailService')(protectedApi);
 

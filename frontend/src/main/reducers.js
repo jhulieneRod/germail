@@ -13,6 +13,7 @@ import CadLead from '../lead/leadReducer';
 import CadEmail from '../email/emailReducer';
 import CadDestinatarioEmail from '../destinatarioEmail/destinatarioEmailReducer';
 import CadLogDestinatarioEmail from '../logDestinatarioEmail/logDestinatarioEmailReducer';
+import CadSequencia from '../sequencia/sequenciaReducer';
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     leadCad: CadLead,
     destinatarioEmailCad: CadDestinatarioEmail,
     logDestinatarioEmailCad: CadLogDestinatarioEmail,
+    sequenciaCad: CadSequencia,
 })
 
 export default rootReducer

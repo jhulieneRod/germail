@@ -10,7 +10,7 @@ import CadConfiguracao from '../../configuracao/configuracao';
 import CadTag from '../../tag/tag';
 import CadLead from '../../lead/lead';
 import CadEmail from '../../email/email';
-import Sequencia from '../../fluxo/fluxo';
+import Sequencia from '../../sequencia/sequencia';
 
 /** USADO PARA O MENU FUNCIONAR CORRETAMENTE */
 var treeViewGT;
