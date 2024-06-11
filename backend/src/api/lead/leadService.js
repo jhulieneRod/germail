@@ -7,18 +7,21 @@ module.exports = function (route) {
                                 l.id,
                                 l.nome, 
                                 l.email, 
-                                l.status, 
-                                l.pontuacao,
+                                l.status,
                                 case
                                     when l.status = 1
                                     then 'Ativo'
                                     else 'Desativo'
                                 end as status_descricao,
-                                concat(t.id, ':::', t.titulo, ':::', t.cor) as tag
+                                (select
+                                	GROUP_CONCAT(CONCAT(t.titulo,':::', t.cor))
+                                	from tag_lead tl
+                              		left join tag t
+                              		on t.id = tl.id_tag
+                              		where tl.id_lead = l.id
+                                	) as tags
                               from 
-                                lead l
-                              left join tag t
-                              on t.id = l.id_tag`;
+                                lead l`;
 
         knex.raw(sqlCommand, [])
         .then((dados) => {

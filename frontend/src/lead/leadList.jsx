@@ -71,37 +71,40 @@ const LeadList = (props) => {
             headerClassName: 'header_left',
         },
         {
-            accessorKey: 'pontuacao',
-            id: 'pontuacao',
-            header: 'Pontuação',
-            minSize: 50,
-            headerClassName: 'header_left',
-        },
-        {
-            accessorKey: 'tag',
-            id: 'tag',
+            accessorKey: 'tags',
+            id: 'tags',
             header: 'Tag',
-            size: 150,
+            size: 400,
             headerClassName: 'header_left',
             cell: ({ row }) => {
-                let tag = row.original.tag ? row.original.tag.split(':::') : false;
-                
-                return (tag) ? (
-                    <div style={
-                        {
-                            backgroundColor: tag[2], 
-                            padding: '3px', 
-                            borderRadius: '100px 0 100px 0',
-                            flex: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#FFF',
-                            fontWeight: '600'
-                        }}>
-                        {tag[1]}
+                let tags = row.original.tags ? row.original.tags.split(',') : [];
+        
+                return (
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', overflow:'auto', alignSelf:'self-start' }}>
+                        {tags.map((tag, index) => {
+                            let [label, color] = tag.split(':::');
+                            return (
+                                <div 
+                                    key={index}
+                                    style={{
+                                        backgroundColor: color, 
+                                        padding: '3px', 
+                                        borderRadius: '100px 0 100px 0',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: '#FFF',
+                                        fontWeight: '600',
+                                        minWidth: '120px',
+                                        fontSize:'small',
+                                        height:'20px'
+                                    }}>
+                                    {label}
+                                </div>
+                            );
+                        })}
                     </div>
-                ) : ''
+                );
             }
         },
     ]

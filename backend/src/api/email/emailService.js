@@ -10,7 +10,6 @@ module.exports = function (route) {
                                 e.conteudo, 
                                 e.design, 
                                 e.status, 
-                                e.automatico,
                                 case
                                     when e.status = 1
                                     then 'Ativo'

@@ -1,115 +1,151 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
---
--- Host: localhost    Database: geremail
--- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- CREATE DATABASE IF NOT EXISTS germail CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE germail;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+-- Tabela Lead
+CREATE TABLE lead (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    status TINYINT NOT NULL
+);
 
---
--- Table structure for table `configuracao`
---
+-- Tabela Tag
+CREATE TABLE tag (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    cor VARCHAR(7)
+);
 
-DROP TABLE IF EXISTS `configuracao`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `configuracao` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `campo` varchar(100) NOT NULL,
-  `valor` varchar(100) DEFAULT NULL,
-  `tipo` smallint(6) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tabela Email
+CREATE TABLE email (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    assunto VARCHAR(255) NOT NULL,
+    conteudo TEXT,
+    design TEXT,
+    status TINYINT NOT NULL
+);
 
---
--- Table structure for table `email`
---
+-- Tabela Log_Destinatario_Email
+CREATE TABLE log_destinatario_email (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_email INT NOT NULL,
+    id_lead INT NOT NULL,
+    datahora DATETIME NOT NULL,
+    acao TINYINT NOT NULL,
+    FOREIGN KEY (id_email) REFERENCES email(id),
+    FOREIGN KEY (id_lead) REFERENCES lead(id)
+);
 
-DROP TABLE IF EXISTS `email`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `email` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `assunto` varchar(100) DEFAULT NULL,
-  `conteudo` text NOT NULL,
-  `status` smallint(6) NOT NULL DEFAULT 1,
-  `automatico` smallint(6) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tabela Tag_Lead
+CREATE TABLE tag_lead (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_lead INT NOT NULL,
+    id_tag INT NOT NULL,
+    FOREIGN KEY (id_lead) REFERENCES lead(id),
+    FOREIGN KEY (id_tag) REFERENCES tag(id)
+);
 
---
--- Table structure for table `lead`
---
+-- Tabela Sequencia_Lead
+CREATE TABLE sequencia_lead (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seq INT NOT NULL,
+    id_lead INT NOT NULL,
+    id_sequencia INT NOT NULL,
+    FOREIGN KEY (id_lead) REFERENCES lead(id),
+    FOREIGN KEY (id_sequencia) REFERENCES sequencia(id)
+);
 
-DROP TABLE IF EXISTS `lead`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `lead` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `status` smallint(6) NOT NULL DEFAULT 1,
-  `pontuacao` bigint(20) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tabela Sequencia
+CREATE TABLE sequencia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    ultima_alteracao DATETIME NOT NULL
+);
 
---
--- Table structure for table `tag`
---
+-- Tabela Etapa
+CREATE TABLE etapa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    tipo TINYINT NOT NULL,
+    id_passo INT,
+    FOREIGN KEY (id_passo) REFERENCES passo(id)
+);
 
-DROP TABLE IF EXISTS `tag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tag` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(100) NOT NULL,
-  `descricao` varchar(100) DEFAULT NULL,
-  `cor` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tabela Gatilho
+CREATE TABLE gatilho (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
 
---
--- Table structure for table `usuario`
---
+-- Tabela Gatilho_Condicao
+CREATE TABLE gatilho_condicao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_gatilho INT NOT NULL,
+    id_condicao INT NOT NULL,
+    FOREIGN KEY (id_gatilho) REFERENCES gatilho(id),
+    FOREIGN KEY (id_condicao) REFERENCES condicao(id)
+);
 
-DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL,
-  `usuario` varchar(100) NOT NULL,
-  `ativo` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tabela Condicao
+CREATE TABLE condicao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL
+);
 
---
--- Dumping routines for database 'geremail'
---
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+-- Tabela Acao
+CREATE TABLE acao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seq INT NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+-- Tabela Atraso
+CREATE TABLE atraso (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL
+);
 
--- Dump completed on 2024-05-13 21:43:52
+-- Tabela Etapa_Conteudo
+CREATE TABLE etapa_conteudo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_etapa INT NOT NULL,
+    id_conteudo INT NOT NULL,
+    valor TEXT,
+    id_passo INT,
+    tipo_condicao TINYINT NOT NULL,
+    FOREIGN KEY (id_etapa) REFERENCES etapa(id),
+    FOREIGN KEY (id_passo) REFERENCES passo(id)
+);
+
+-- Tabela Passo
+CREATE TABLE passo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_etapaIni INT,
+    id_proxEtapa INT,
+    FOREIGN KEY (id_etapaIni) REFERENCES etapa(id),
+    FOREIGN KEY (id_proxEtapa) REFERENCES etapa(id)
+);
+
+-- Inserção de registros na tabela Gatilho
+INSERT INTO gatilho (id, titulo, descricao) VALUES
+(1, 'Data/Hora', 'Gatilho ativado por data ou hora'),
+(2, 'Tag Incluída', 'Gatilho ativado por inclusão de tag'),
+(3, 'Tag Removida', 'Gatilho ativado por remoção de tag'),
+(4, 'Novo Contato', 'Gatilho ativado por novo contato');
+
+-- Inserção de registros na tabela Acao
+INSERT INTO acao (id, seq, titulo, descricao) VALUES
+(1, 1, 'Adicionar Tag', 'Ação de adicionar uma tag ao lead'),
+(2, 2, 'Remover Tag', 'Ação de remover uma tag do lead'),
+(3, 3, 'Desativar Lead', 'Ação de desativar um lead'),
+(4, 4, 'Ativar Lead', 'Ação de ativar um lead');
+
+-- Inserção de registros na tabela Atraso
+INSERT INTO atraso (id, tipo) VALUES
+(1, 'Segundos'), -- Segundos
+(2, 'Minutos'), -- Minutos
+(3, 'Horas'), -- Horas
+(4, 'Dias'); -- Dias

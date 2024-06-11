@@ -167,7 +167,7 @@ input[type=number] {
   width: 98% !important;
   display: inline-block;
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
 }
 
 .card-body{
