@@ -18,6 +18,13 @@ export function getList() {
     }
 }
 
+export function getListTag(callback = () => {}) {
+    axios.get(`${BASE_URL}/tag/`)
+    .then((resp) => {
+        callback(resp.data);
+    });
+}
+
 export function create(values, dispatch, props) {
     return submit(values, 'post', 'Tag Incluída com Sucesso!');
 }

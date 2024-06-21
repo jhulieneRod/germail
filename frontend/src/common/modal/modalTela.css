@@ -1,0 +1,19 @@
+.modalTela .popup-container {
+    min-width: 500px;
+    border-top: 0;
+}
+
+.modalTela .popup-header {
+    justify-content: flex-end;
+    border-bottom: 0;
+}
+
+.modalTela .popup-content {
+    margin: 0 15px 15px 15px;
+}
+
+.modalTela.popup-titulo {
+    font-size: x-large;
+    margin-bottom: 15px;
+    font-weight: bold;
+}

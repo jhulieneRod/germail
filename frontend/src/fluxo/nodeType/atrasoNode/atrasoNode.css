@@ -1,0 +1,67 @@
+.atrasoNode {
+    display: grid;
+    grid-template-rows: calc(3, 1fr);
+    border-radius: 5px;
+    background: white;
+    width: 330px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+.atrasoNode .node-title {
+    display: flex;
+    background-color: #faab2f2e;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px;
+    align-items: center;
+}
+
+.atrasoNode .node-title i {
+    margin-right: 8px;
+    margin-left: 10px;
+    color: #faab2f;
+}
+
+.atrasoNode .node-content {
+    margin: 10px 10px 0px 10px;
+}
+
+.atrasoNode .node-content .item-content {
+    display: flex;
+    margin-left: 5px;
+}
+
+.atrasoNode .node-content .item-content .input-atraso, .item-content .select-atraso{
+    border: none;
+    background-color: #faac2f3b;
+    border-radius: 5px;
+    width: 40px;
+    padding: 5px;
+    margin-left: 3px;
+}
+
+.item-content .select-atraso{
+    margin-right: 3px;
+    width: 90px;
+}
+
+.atrasoNode .node-content .item-content .titulo {
+    color: gray;
+}
+
+.atrasoNode .node-footer {
+    margin: 10px;
+    text-align: right;
+}
+
+.atrasoNode .node-button{
+    margin-bottom: 10px;
+}
+.atrasoNode .node-button span {
+    border: 2px dashed #faab2f;
+    color: #faab2f;
+}
+
+.atrasoNode .node-button :hover {
+    background-color: #faab2f3c;
+}

@@ -17,6 +17,13 @@ export function getList() {
     }
 }
 
+export function getListEmail(callback = () => {}) {
+    axios.get(`${BASE_URL}/email/`)
+    .then((resp) => {
+        callback(resp.data);
+    });
+}
+
 export function getConteudoEmail(id, callback = () => {}) {
     axios.get(`${BASE_URL}/email_visualizar/${id}`)
     .then((resp) => {

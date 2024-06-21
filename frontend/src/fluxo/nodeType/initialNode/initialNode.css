@@ -1,0 +1,125 @@
+.customNode {
+    display: grid;
+    grid-template-rows: calc(4, 1fr);
+    border-radius: 5px;
+    background: white;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.1);
+    padding: 7px;
+}
+
+.customNode .node-title{
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 0 10px;
+}
+
+.customNode .node-title i{
+    font-size: 18px;
+}
+
+.customNode .node-title span{
+    margin-left: 10px;
+}
+
+.customNode .node-content{
+    display: flex;
+    padding: 10px 5px 10px 5px;
+}
+
+.customNode .node-content .desc-gatilho{
+    color: silver;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.customNode .node-button span{
+    border: 2px dashed #1391ec;
+    color: #1391ec;
+}
+
+.customNode .node-button :hover{
+    background-color: #1392ec17;
+}
+
+.customNode .node-footer{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.react-flow__handle-right{
+    background-color: #8f8f8f;
+    top:89%;
+    width: 12px;
+    height: 12px;
+    border: none;
+    right: -6px;
+}
+
+.react-flow__handle-left{
+    background-color: #8f8f8f;
+    width: 12px;
+    height: 12px;
+    border: none;
+    left: -10px;
+}
+
+.customNode .node-content {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0px 0px 0px;
+}
+
+.customNode .node-content .item-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin-left: 5px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.customNode .node-content .item-content .btn-excluir{
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 2;
+    width: 30px;
+    color: #ec6c6cb9;
+    align-self: center;
+    font-size: 15px;
+}
+
+.customNode .node-content .item-content .btn-excluir:hover{
+    cursor: pointer;
+    color: #f35e5e;
+}
+
+.customNode .node-content .item-content:hover{
+    background-color: #1392ec17;
+}
+
+.customNode .node-content .item-content .item-titulo {
+    color: gray;
+}
+
+.customNode .node-content .hr-item{
+    margin: 10px;
+}
+
+.customNode .node-content .input-tag{
+    width: 200px;
+    border-radius: 5px;
+    padding-left: 5px;
+    border: 0.2px solid silver;
+    margin-top: 5px;
+}
+
+.customNode .select-tag{
+    border: none;
+    padding: 5px;
+    margin: 5px 15px 0 0;
+    border-radius: 5px;
+}

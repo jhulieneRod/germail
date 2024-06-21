@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { showUpdate, remove, update, getList } from './sequenciaActions'
+import { showUpdate, remove, update, getList, insereFluxo } from './sequenciaActions'
 import SPButton from '../common/form/spButton';
 import { msgQuestion } from '../common/msg/msg';
 import ReactTableV8 from '../common/grid/gridReactTableV8';
@@ -17,12 +17,20 @@ const SequenciaList = (props) => {
 
     function removerSequencia(data) {
         msgQuestion('Deseja realmente excluir?')
-            .then((result) => {
-                if (result.value) {
-                    props.remove(data);
-                }
-            });
+        .then((result) => {
+            if (result.value) {
+                props.remove(data);
+            }
+        });
     }
+
+    const onClickFluxo = (linha) => {
+        if(linha.fluxo){
+            props.onSelectSequencia(linha.fluxo);
+        }else{
+            props.insereFluxo(linha.id, props.onSelectSequencia);
+        }
+    };
 
     const columnsV8 = [
         {
@@ -33,11 +41,12 @@ const SequenciaList = (props) => {
                     <div>
                         <SPButton type='button' className='warning btn-sm' icon='pencil-alt' data-title='Alterar' onClick={() => props.showUpdate(row.original)} />
                         <SPButton type='button' className='danger btn-sm' icon='trash' data-title='Excluir' onClick={() => removerSequencia(row.original)} />
+                        <SPButton type='button' className='info btn-sm' icon='layer-group' data-title='Fluxo' onClick={() => onClickFluxo(row.original)} />
                     </div>
                 )
             },
-            minSize: 81,
-            size: 81,
+            minSize: 120,
+            size: 120,
             className: 'column_icon',
         },
         {
@@ -78,5 +87,5 @@ const mapStateToProps = state => ({
     list: state.sequenciaCad.list,
     stateReq: state.sequenciaCad.stateReq 
 })
-const mapDispatchToProps = dispatch => bindActionCreators({ showUpdate, remove, update, getList }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ showUpdate, remove, update, getList, insereFluxo }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(SequenciaList)

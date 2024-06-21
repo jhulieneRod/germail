@@ -1,0 +1,43 @@
+.emailNode {
+    display: grid;
+    grid-template-rows: calc(3, 1fr);
+    border-radius: 5px;
+    background: white;
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+.emailNode .node-title {
+    display: flex;
+    background-color: #3c8dbc3c;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px;
+    align-items: center;
+}
+
+.emailNode .node-title i {
+    margin-right: 8px;
+    margin-left: 10px;
+    color: #3c8dbc;
+}
+
+.emailNode .node-content {
+    margin: 10px 10px 0px 10px;
+}
+
+.emailNode .node-footer {
+    margin: 10px;
+    text-align: right;
+}
+
+.emailNode .node-content .item-content {
+    display: flex;
+}
+.emailNode .node-content .item-content .select-email{
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}

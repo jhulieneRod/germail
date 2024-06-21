@@ -7,7 +7,8 @@ module.exports = function (route) {
         const sqlCommand = `select 
                                 s.id,
                                 s.nome, 
-                                date_format(s.ultima_alteracao, '%d/%m/%Y %H:%mm') as ultima_alteracao
+                                date_format(s.ultima_alteracao, '%d/%m/%Y %H:%mm') as ultima_alteracao,
+                                fluxo
                               from 
                                 sequencia s`;
 
@@ -55,6 +56,34 @@ module.exports = function (route) {
         .insert(req.body)
         .then(() => {
             return res.status(200).send(true);
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.post('/fluxoSequencia/:id', (req, res, next) => {
+        let fluxo = {nodes: '', edges:''}
+        knex('fluxo')
+        .insert(fluxo)
+        .then((dados) => {
+            return res.status(200).send({fluxo: dados[0]});
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.get('/fluxoSequencia/:id', (req, res, next) => {
+        const sqlCommand = `select 
+                                *
+                              from 
+                                fluxo
+                            where id = ?`;
+
+        knex.raw(sqlCommand, [req.params.id])
+        .then((dados) => {
+            return res.send(dados[0][0]);
         })
         .catch(function (error) {
             return res.status(500);

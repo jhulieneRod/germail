@@ -61,3 +61,31 @@ export function init(isPost = false) {
         initialize('sequenciaForm', INITIAL_VALUES())
     ]
 }
+
+export function showFluxo() {
+    return [
+        showTabs(['tabFluxoSequencia'], cad_key),
+        selectTab('tabFluxoSequencia', cad_key)
+    ]
+}
+
+export function insereFluxo(id, callback = () => {}){
+    return dispatch => {
+        axios.post(`${BASE_URL}/fluxoSequencia/${id}`)
+        .then(resp => {
+            let fluxo = resp.data.fluxo;
+            if(fluxo){
+                let seqAlterada = {id, fluxo};
+                axios.put(`${BASE_URL}/sequencia/${id}`, seqAlterada)
+                .then(() => {
+                    callback(fluxo)
+                    dispatch(showFluxo())
+                })
+            }
+        })
+        .catch(e => {
+            // console.log('e.response.data.errors -> ',e);
+            e.response.data.errors.forEach(error => tsError(error))
+        })
+    }
+}

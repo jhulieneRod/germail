@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -8,10 +8,11 @@ import TabsHeader from '../common/tab/tabsHeader'
 import TabsContent from '../common/tab/tabsContent'
 import TabHeader from '../common/tab/tabHeader'
 import TabContent from '../common/tab/tabContent'
-import { init, create, update } from './sequenciaActions';
+import { init, create, update, showFluxo } from './sequenciaActions';
 
 import List from './sequenciaList';
 import Form from './sequenciaForm';
+import Fluxo from '../fluxo/fluxo';
 
 const Sequencia = props => {
 
@@ -21,6 +22,14 @@ const Sequencia = props => {
     }, []);
 
     const parentID = { ID: 'CAD_SEQUENCIA' };
+
+    const [fluxo, setFluxo] =  useState(false);
+    const mostraFluxoSequencia = (idFluxo) => {
+        if(idFluxo){
+            setFluxo(idFluxo);
+            props.showFluxo(idFluxo);
+        }
+    }
 
     return (
         <Content>
@@ -33,13 +42,16 @@ const Sequencia = props => {
                 </TabsHeader>
                 <TabsContent>
                     <TabContent id='tabListSequencia' getParent={parentID}>
-                        <List />
+                        <List onSelectSequencia={mostraFluxoSequencia} />
                     </TabContent>
                     <TabContent id='tabCreateSequencia' getParent={parentID}>
                         <Form name='tabCreateSequenciaForm' onSubmit={props.create} submitClass='primary' submitLabel='Salvar' />
                     </TabContent>
                     <TabContent id='tabUpdateSequencia' getParent={parentID}>
                         <Form name='tabUpdateSequenciaForm' onSubmit={props.update} readOnly={true} submitClass='primary' submitLabel='Salvar' />
+                    </TabContent>
+                    <TabContent id='tabFluxoSequencia' getParent={parentID}>
+                        <Fluxo fluxo={fluxo} onClickVoltar={() => props.init(false)}/>
                     </TabContent>
                 </TabsContent>
             </Tabs>
@@ -48,5 +60,5 @@ const Sequencia = props => {
 }
 
 const mapStateToProps = state => ({ list: state.sequenciaCad.list })
-const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, showFluxo }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Sequencia)
