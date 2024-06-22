@@ -14,7 +14,7 @@ module.exports = function (route) {
                                     else 'Desativo'
                                 end as status_descricao,
                                 (select
-                                	GROUP_CONCAT(CONCAT(t.titulo,':::', t.cor))
+                                	GROUP_CONCAT(CONCAT(t.titulo,':::', t.cor, ':::', t.id))
                                 	from tag_lead tl
                               		left join tag t
                               		on t.id = tl.id_tag
@@ -24,48 +24,64 @@ module.exports = function (route) {
                                 lead l`;
 
         knex.raw(sqlCommand, [])
-        .then((dados) => {
-            return res.send(dados[0]);
-        })
-        .catch(function (error) {
-            return res.status(500);
-        }, next);
+            .then((dados) => {
+                return res.send(dados[0]);
+            })
+            .catch(function (error) {
+                return res.status(500);
+            }, next);
     });
 
     route.put('/lead/:id', (req, res, next) => {
         const id = req.params.id;
+        const tags = req.body.tags;
+        delete req.body.tags;
         const values = req.body;
         knex('lead')
             .where('id', id)
             .update(values)
             .then(() => {
-                return res.status(200).send(true);
+                knex('tag_lead')
+                    .where('id_lead', id)
+                    .delete()
+                    .then(() => {
+                        let valuesTag = [];
+                        tags.map((tag) => {
+                            valuesTag.push({ id_lead: id, id_tag: tag.id });
+                        });
+
+                        knex('tag_lead')
+                            .insert(valuesTag)
+                            .then(() => {
+                                return res.status(200).send(true);
+                            })
+                    })
             })
-            .catch(function (error) {}, next);
+            .catch(function (error) { }, next);
     });
 
     route.delete('/lead/:id', (req, res, next) => {
         const id = req.params.id;
 
         knex('lead')
-        .where('id', id)
-        .delete()
-        .then((dados) => {
-            return res.status(200).send(true);
-        })
-        .catch(function (error) {
-            return res.status(500);
-        }, next);
+            .where('id', id)
+            .delete()
+            .then((dados) => {
+                return res.status(200).send(true);
+            })
+            .catch(function (error) {
+                return res.status(500);
+            }, next);
     });
 
     route.post('/lead/', (req, res, next) => {
         knex('lead')
-        .insert(req.body)
-        .then(() => {
-            return res.status(200).send(true);
-        })
-        .catch(function (error) {
-            return res.status(500);
-        }, next);
+            .insert(req.body)
+            .then(() => {
+                return res.status(200).send(true);
+            })
+            .catch(function (error) {
+                return res.status(500);
+            }, next);
     });
 }

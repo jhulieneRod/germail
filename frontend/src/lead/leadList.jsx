@@ -82,7 +82,7 @@ const LeadList = (props) => {
                 return (
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', overflow:'auto', alignSelf:'self-start' }}>
                         {tags.map((tag, index) => {
-                            let [label, color] = tag.split(':::');
+                            let [label, color, id] = tag.split(':::');
                             return (
                                 <div 
                                     key={index}
