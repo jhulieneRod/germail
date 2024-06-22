@@ -12,9 +12,8 @@ import ButtonTextSearchGrid from '../common/grid/buttonTextSearchGrid';
 import TagListSearch from '../tag/tagListSearch';
 
 let LeadForm = (props) => {
-    const semTag = [{cor: '#333', titulo: 'Nenhuma Tag Selecionada'}];
     const [show, setShow] = useState(false);
-    const [tag, setTag] = useState(semTag);
+    const [tag, setTag] = useState([]);
 
     useEffect(() => {
         if(props.formValue?.tags){
@@ -32,13 +31,33 @@ let LeadForm = (props) => {
 
     const adicionaTag = (newTag) =>{
         let newTags = [...tag];
-        newTags.push(newTag);
+        let podeAdicionar = true;
+        tag.map((tags) => {
+            if(newTag.id === parseInt(tags.id)){
+                msgWarning('A Tag já está vinculada ao Lead!');
+                podeAdicionar = false;
+                return;
+            }
+        });
+
+        if(podeAdicionar){
+            newTags.push(newTag);
+            setTag(newTags);
+            setShow(false);
+        }
+    }
+
+    const removeTag = (idTag) =>{
+        let newTags = [];
+        tag.map((tags) => {
+            if(parseInt(idTag) !== parseInt(tags.id)){
+                newTags.push(tags);
+            }
+        });
         setTag(newTags);
-        setShow(false);
     }
 
     function salvarLead() {
-        debugger;
         if (!props.valid) {
             msgWarning('Informe os campos obrigatórios');
             props.handleSubmit();
@@ -93,27 +112,55 @@ let LeadForm = (props) => {
                     marginLeft: '10px',
                     marginTop: '10px',
                 }}>
-                    {tag.map((tag, index) => {
+                    {(tag.length) ? tag.map((tag, index) => {
                             return (
-                                <div 
-                                    key={index}
-                                    style={{
-                                        backgroundColor: tag.cor, 
-                                        padding: '3px', 
-                                        borderRadius: '100px 0 100px 0',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        color: '#FFF',
-                                        fontWeight: '600',
-                                        minWidth: '120px',
-                                        fontSize:'small',
-                                        height:'20px'
-                                    }}>
-                                    {tag.titulo}
-                                </div>
+                                <>
+                                    <div 
+                                        key={index}
+                                        style={{
+                                            backgroundColor: tag.cor, 
+                                            padding: '5px', 
+                                            borderRadius: '100px 0 100px 0',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#FFF',
+                                            fontWeight: '600',
+                                            minWidth: '200px',
+                                            fontSize:'small',
+                                        }}>
+                                        {tag.titulo}
+                                    </div>
+                                    <Field
+                                        name='remove_tag'
+                                        maxLength={200}
+                                        component={ButtonTextSearchGrid}
+                                        icon='trash'
+                                        cols='12'
+                                        className='link'
+                                        onBtnClick={() => removeTag(tag.id)}
+                                        style={{color:'#de4e4e'}}
+                                    />
+                            </>
                             );
-                        })}
+                        })
+                        : 
+                        <div 
+                            style={{
+                                backgroundColor: '#333', 
+                                padding: '5px', 
+                                borderRadius: '100px 0 100px 0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#FFF',
+                                fontWeight: '600',
+                                minWidth: '200px',
+                                fontSize:'small',
+                                marginRight:'10px'
+                            }}>
+                            Nenhuma Tag Selecionada
+                        </div>}
                     <Field
                         name='select_tag'
                         maxLength={200}
@@ -122,18 +169,6 @@ let LeadForm = (props) => {
                         cols='12'
                         onBtnClick={() => setShow(true)}
                     />
-                    {(tag.id !== 0)
-                      &&  <Field
-                            name='remove_tag'
-                            maxLength={200}
-                            component={ButtonTextSearchGrid}
-                            label='Limpar'
-                            icon='trash'
-                            cols='12'
-                            onBtnClick={() => setTag(semTag)}
-                            className='link'
-                        />
-                    }  
                 </div>
 
                 <TagListSearch

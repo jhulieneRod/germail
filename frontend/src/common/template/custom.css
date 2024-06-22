@@ -509,3 +509,8 @@ div[data-extra=tabs] > div > div > div > div:first-of-type > div[role=tab] > but
   width: 40px;
   height: 40px;
 }/*# sourceMappingURL=custom.css.map */
+
+tbody tr {
+  height: 50px;
+  align-items: center;
+}

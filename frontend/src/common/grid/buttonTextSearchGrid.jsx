@@ -12,6 +12,7 @@ const ButtonTextSearchGrid = props => {
                 onClick={props.onBtnClick}
                 disabled={(props.readOnly !== undefined) ? props.readOnly : false}
                 label={props.label ?? ''}
+                style={props.style}
             />
         </>
     )

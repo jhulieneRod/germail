@@ -80,7 +80,7 @@ const LeadList = (props) => {
                 let tags = row.original.tags ? row.original.tags.split(',') : [];
         
                 return (
-                    <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', overflow:'auto', alignSelf:'self-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', overflow:'auto', alignItems:'center', height: '100%' }}>
                         {tags.map((tag, index) => {
                             let [label, color, id] = tag.split(':::');
                             return (
@@ -97,7 +97,7 @@ const LeadList = (props) => {
                                         fontWeight: '600',
                                         minWidth: '120px',
                                         fontSize:'small',
-                                        height:'20px'
+                                        height: '25px'
                                     }}>
                                     {label}
                                 </div>
