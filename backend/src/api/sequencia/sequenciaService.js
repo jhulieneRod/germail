@@ -8,7 +8,7 @@ module.exports = function (route) {
                                 s.id,
                                 s.nome, 
                                 date_format(s.ultima_alteracao, '%d/%m/%Y %H:%mm') as ultima_alteracao,
-                                fluxo
+                                coalesce(fluxo, 0) as fluxo
                               from 
                                 sequencia s`;
 
@@ -63,11 +63,11 @@ module.exports = function (route) {
     });
 
     route.post('/fluxoSequencia/:id', (req, res, next) => {
-        let fluxo = {nodes: '', edges:''}
+        let fluxo = {id: `react_flow_${Date.now()}`, nodes: JSON.stringify([]), edges: JSON.stringify([])}
         knex('fluxo')
         .insert(fluxo)
         .then((dados) => {
-            return res.status(200).send({fluxo: dados[0]});
+            return res.status(200).send({fluxo});
         })
         .catch(function (error) {
             return res.status(500);
@@ -83,7 +83,66 @@ module.exports = function (route) {
 
         knex.raw(sqlCommand, [req.params.id])
         .then((dados) => {
-            return res.send(dados[0][0]);
+            const fluxo = dados[0][0];
+            fluxo.nodes = JSON.parse(fluxo.nodes);
+            fluxo.edges = JSON.parse(fluxo.edges);
+            return res.send(fluxo);
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.get('/fluxoEtapa/:id', (req, res, next) => {
+        const sqlCommand = `select 
+                                *
+                              from 
+                                etapa
+                            where id = ?`;
+
+        knex.raw(sqlCommand, [req.params.id])
+        .then((dados) => {
+            if(dados[0].length){
+                const etapa = dados[0][0];
+                etapa.data = JSON.parse(etapa.data);
+                return res.send(etapa);
+            }
+            return res.send(false);
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.put('/fluxoSequencia/:id', (req, res, next) => {
+        knex('fluxo')
+        .update(req.body)
+        .where('id', req.params.id)
+        .then((dados) => {
+            return res.send(true);
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.put('/fluxoEtapa/:id', (req, res, next) => {
+        knex('etapa')
+        .update(req.body)
+        .where('id', req.params.id)
+        .then((dados) => {
+            return res.send(true);
+        })
+        .catch(function (error) {
+            return res.status(500);
+        }, next);
+    });
+
+    route.post('/fluxoEtapa/:id', (req, res, next) => {
+        knex('etapa')
+        .insert(req.body)
+        .then((dados) => {
+            return res.send(true);
         })
         .catch(function (error) {
             return res.status(500);

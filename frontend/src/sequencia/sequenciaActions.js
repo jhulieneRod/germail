@@ -75,10 +75,10 @@ export function insereFluxo(id, callback = () => {}){
         .then(resp => {
             let fluxo = resp.data.fluxo;
             if(fluxo){
-                let seqAlterada = {id, fluxo};
+                let seqAlterada = {id, fluxo: fluxo.id};
                 axios.put(`${BASE_URL}/sequencia/${id}`, seqAlterada)
                 .then(() => {
-                    callback(fluxo)
+                    callback(fluxo.id)
                     dispatch(showFluxo())
                 })
             }

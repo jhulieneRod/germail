@@ -51,23 +51,6 @@
     margin-bottom: 10px;
 }
 
-.react-flow__handle-right{
-    background-color: #8f8f8f;
-    top:89%;
-    width: 12px;
-    height: 12px;
-    border: none;
-    right: -6px;
-}
-
-.react-flow__handle-left{
-    background-color: #8f8f8f;
-    width: 12px;
-    height: 12px;
-    border: none;
-    left: -10px;
-}
-
 .customNode .node-content {
     display: flex;
     flex-direction: column;

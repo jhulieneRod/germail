@@ -4,31 +4,48 @@ import './initialNode.css';
 import IF from '../../../common/operator/if';
 import TelaInitialNode from './telaInitialNode';
 import { getListTag } from '../../../tag/tagActions';
-
+import { updateNode, getContentNode } from '../../fluxoActions';
 
 const InitialNode = (props) => {
-  const getGatilhoId = () => `gatilho_${new Date()}`;
-  const [contentNode, setContentNode] = useState(props.data.content ?? []);
+  const getGatilhoId = () => `gatilho_${Date.now()}`;
+  const [contentNode, setContentNode] = useState([]);
+  const [existeEtapa, setExisteEtapa] = useState(false);
+
   const itens = [
     { tipo: 1, titulo: 'Evento de Lead', descricao: 'Novo Lead Incluído', valor: '' },
     { tipo: 2, titulo: 'Evento de Lead', descricao: 'Lead Desativado', valor: '' },
     { tipo: 3, titulo: 'Evento de Lead', descricao: 'Lead Ativado', valor: '' },
     { tipo: 4, titulo: 'Evento de Lead', descricao: 'Tag Atribuída ao Lead', valor: '' },
   ];
+
+  const updateEtapa = (contentEtapa) => {
+    let etapa = {id: props.id, data: JSON.stringify(contentEtapa)};
+    updateNode(etapa, existeEtapa);
+  }
+
   const onClickItem = (item) => {
     let newContent = [...contentNode];
     item.id = getGatilhoId();
     newContent.push(item);
     setContentNode(newContent);
-    props.data.functions.onCloseModalTela()
+    props.data.functions.onCloseModalTela();
+    updateEtapa(newContent);
   };
 
   const telaNode = TelaInitialNode(itens, onClickItem, 'Eventos de Lead', 'O evento de Lead é um evento específico do sistema que inicia sua automação.');
 
   const [listTag, setListTag] = useState([]);
 
+  const validaEtapa = (etapa) => {
+    if(etapa){
+      setContentNode(etapa.data);
+      setExisteEtapa(true);
+    }
+  };
+
   useEffect(() => {
     getListTag(setListTag);
+    getContentNode(props.id, validaEtapa);
   }, []);
 
   const addNewGatilho = (e) => {
@@ -45,6 +62,7 @@ const InitialNode = (props) => {
       return item;
     });
     setContentNode(newContent);
+    updateEtapa(newContent);
   }
 
   const removeGatilho = (gatilho) => {
@@ -56,6 +74,7 @@ const InitialNode = (props) => {
       return item;
     });
     setContentNode(newContent);
+    updateEtapa(newContent);
   }
 
   const [active, setActive] = useState(false);
@@ -84,7 +103,7 @@ const InitialNode = (props) => {
                         <select className='select-tag'>
                           <option>Selecione a Tag...</option>
                           {listTag.map((tag, index) => (
-                            <option key={index} value={tag.id} onClick={() => updateGatilho(gatilho, tag.id)}>
+                            <option key={index} value={tag.id} onClick={() => updateGatilho(gatilho, tag.id)} selected={gatilho.valor ===tag.id}>
                               {tag.titulo}
                             </option>
                           ))}

@@ -25,10 +25,10 @@ const SequenciaList = (props) => {
     }
 
     const onClickFluxo = (linha) => {
-        if(linha.fluxo){
-            props.onSelectSequencia(linha.fluxo);
-        }else{
+        if(linha.fluxo === "0" || linha.fluxo === ''){
             props.insereFluxo(linha.id, props.onSelectSequencia);
+        }else{
+            props.onSelectSequencia(linha.fluxo);
         }
     };
 

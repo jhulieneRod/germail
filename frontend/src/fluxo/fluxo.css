@@ -563,3 +563,22 @@
   border-radius: 10px;
   color: #5b8aef;
 }
+
+.react-flow__handle-right{
+  background-color: #8f8f8f;
+  width: 12px;
+  height: 12px;
+  border: none;
+  right: -6px;
+  top: auto;
+  bottom: 5px;
+}
+
+.react-flow__handle-left{
+  background-color: #8f8f8f;
+  width: 12px;
+  height: 12px;
+  border: none;
+  left: -10px;
+  top:80px;
+}

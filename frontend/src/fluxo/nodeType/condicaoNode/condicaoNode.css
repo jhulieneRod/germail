@@ -3,7 +3,7 @@
     grid-template-rows: calc(3, 1fr);
     border-radius: 5px;
     background: white;
-    width: 200px;
+    width: 400px;
     border-radius: 10px;
     box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
 }
@@ -28,7 +28,6 @@
 
 .condicaoNode .node-content .item-content {
     display: flex;
-    flex-direction: column;
     margin-left: 5px;
 }
 
@@ -52,4 +51,31 @@
 
 .condicaoNode .node-button :hover {
     background-color: #5dcc0e3c;
+}
+
+.condicaoNode .select-condicao{
+    border: none;
+    padding: 5px;
+    margin: 5px 15px 0 0;
+    border-radius: 5px;
+}
+
+.condicaoNode .node-content .item-content .btn-excluir{
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 2;
+    width: 30px;
+    color: #ec6c6cb9;
+    align-self: center;
+    font-size: 15px;
+}
+
+.condicaoNode .node-content .item-content .btn-excluir:hover{
+    cursor: pointer;
+    color: #f35e5e;
+}
+
+.condicaoNode .select-footer{
+    margin-right: 3px;
+    margin-left: 5px;
 }

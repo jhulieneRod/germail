@@ -5,9 +5,11 @@ import IF from '../../../common/operator/if';
 import Node from '../../node';
 import { getListTag } from '../../../tag/tagActions';
 import TelaInitialNode from '../initialNode/telaInitialNode';
+import { updateNode } from '../../fluxoActions';
 
 const AcaoNode = (props) => {
-  const getAcaoId = () => `acao_${new Date()}`;
+  const [existeEtapa, setExisteEtapa] = useState(false);
+  const getAcaoId = () => `acao_${Date.now()}`;
   const [contentNode, setContentNode] = useState(props.data.content ?? []);
   const itens = [
     { tipo: 1, titulo: 'Ação de Lead', descricao: 'Ativa Lead', valor: '' },
@@ -17,16 +19,22 @@ const AcaoNode = (props) => {
     // { tipo: 5, titulo: 'Ação de Lead', descricao: 'Remove Sequência', valor: '' },
   ];
 
+  const atualizaEtapa = (newContent) => {
+    let etapa = {id: props.id, data: JSON.stringify(newContent)};
+    updateNode(etapa, existeEtapa);
+  }
+
   const onClickItem = (item) => {
     let newContent = [...contentNode];
     item.id = getAcaoId();
     newContent.push(item);
     setContentNode(newContent);
+    atualizaEtapa(newContent);
     props.data.functions.onCloseModalTela()
   };
 
   const telaNode = TelaInitialNode(itens, onClickItem, 'Ações de Lead', 'A ação de Lead é uma ação específica do sistema que será executada no lead.');
-
+  const [atualiza, setAtualiza] = useState(false);
 
   const [listTag, setListTag] = useState([]);
 
@@ -48,6 +56,7 @@ const AcaoNode = (props) => {
       return item;
     });
     setContentNode(newContent);
+    atualizaEtapa(newContent);
   }
 
   const removeAcao = (acao) => {
@@ -59,6 +68,7 @@ const AcaoNode = (props) => {
       return item;
     });
     setContentNode(newContent);
+    atualizaEtapa(newContent);
   }
 
   const [active, setActive] = useState(false);
@@ -67,7 +77,7 @@ const AcaoNode = (props) => {
   });
 
   return (
-    <Node active={active} tipo='acaoNode' data={props.data}>
+    <Node active={active} tipo='acaoNode' data={props.data} id={props.id} setContent={setContentNode} fnEtapaNova={setExisteEtapa}>
       <Handle type="target" position={Position.Left} id='b' />
       <div className={`fluxoNode acaoNode ${(active) ? 'nodeActive' : ''}`} onClick={() => setActive(!active)}>
         <div className='node-title'>
@@ -88,7 +98,7 @@ const AcaoNode = (props) => {
                         <select className='select-tag'>
                           <option>Selecione a Tag...</option>
                           {listTag.map((tag, index) => (
-                            <option key={index} value={tag.id} onClick={() => updateAcao(acao, tag.id)}>
+                            <option key={index} value={tag.id} onClick={() => updateAcao(acao, tag.id)} selected={acao.valor === tag.id}>
                               {tag.titulo}
                             </option>
                           ))}
