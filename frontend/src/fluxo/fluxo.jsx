@@ -24,6 +24,7 @@ const Fluxo = (props) => {
 
   const [show, setShow] = useState(false);
   const [tela, setTela] = useState({content: '', titulo: ''});
+  const [hidden, setHidden] = useState(false);
 
   const openModalTela = (telaNode) => {
     setShow(true);
@@ -121,9 +122,11 @@ const Fluxo = (props) => {
             onInit={setRfInstance}
           >
             <Controls />
-            <MiniMap />
-            <Panel position="top-right">
-              <InitialNodePasso data={{functions, content: []}}></InitialNodePasso>
+            <Panel position="top-right" className='menu-fluxo'>
+              <div className='panel-fluxo'>
+                <a className='nav-link' data-widget='pushmenufluxo' href='#' role='button' onClick={() => setHidden(!hidden)}><i className='fas fa fa-bars'></i></a>
+                <InitialNodePasso data={{functions, content: []}} hidden={hidden}></InitialNodePasso>
+              </div>
             </Panel>
           </ReactFlow>
         </div>

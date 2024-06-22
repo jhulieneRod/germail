@@ -24,9 +24,9 @@ const InitialNodePasso = (props) => {
 
   return (
     <>
-      <div className='initialNodePasso'>
+      <div className={`initialNodePasso ${props.hidden ? 'hidden' : ''}`}>
         <div className='node-title'>
-          <span>Nova Etapa</span>
+          <span>Adicionar Etapa</span>
         </div>
         <div className='node-content'>
           <span className='subtitulo'>Conteúdo</span>

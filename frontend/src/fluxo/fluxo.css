@@ -205,7 +205,6 @@
 .react-flow__panel {
   position: absolute;
   z-index: 5;
-  margin: 15px;
 }
 
 .react-flow__panel.top {
@@ -581,4 +580,43 @@
   border: none;
   left: -10px;
   top:80px;
+}
+
+.panel-fluxo{
+  display: flex;
+  background-color: #fff;
+  justify-content: center;
+  border: none;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.initialNodePasso{
+  opacity: 1;
+  max-width: 300px; 
+  max-height: 300px;
+  /* transition: max-width 0.2s ease-in-out, max-height 0.2s ease-in-out, opacity 0.5 ease-in-out; */
+}
+
+.panel-fluxo a{
+  background-color: #c3d8e4!important;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.panel-fluxo a:hover{
+  background-color: #c8e5f6!important;
+}
+
+.hidden {
+  max-width: 0;
+  max-height: 0;
+  opacity: 0;
+  padding: 0!important;
+}
+
+.menu-fluxo{
+  height: 100%;
 }
