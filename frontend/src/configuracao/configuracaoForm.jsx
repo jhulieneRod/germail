@@ -1,57 +1,91 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field, getFormValues } from 'redux-form';
 
-import { init, update, getList } from './configuracaoActions';
-
+import { init, update, getList, create } from './configuracaoActions';
+import { required } from '../common/form/inputConfig';
 import LabelAndInput from '../common/form/labelAndInput';
-import LabelAndSelectForm from '../common/form/labelAndSelectForm';
 import Button from '../common/form/button';
-import { msgWarning } from '../common/msg/msg';
 import { CardBodyScroll, CardFooter } from '../common/layout/card';
+import EmailEditor from 'react-email-editor'
+import { msgWarning } from '../common/msg/msg';
+const translate = require('../email/editor-translate.json');
 
 let ConfiguracaoForm = (props) => {
 
-    const [campos, setCampos] = useState([]);
+    const editorRef = useRef(null);
 
-    useEffect(() => {
-        if(props.tipo){
-            props.getList(props.tipo);
-        }
-    }, [props.tipo]);
+    function salvarConfiguracao() {
+        editorRef.current.editor.exportHtml((data) => {
+            const { design, html } = data;
 
-    useEffect(() => {
-        if(props.list){
-            setCampos(props.list);
-        }
-    }, [props.list]);
+            if (!props.valid) {
+                msgWarning('Informe os campos obrigatórios');
+                props.handleSubmit();
+            } else {
+                props.formValue.html = html;
+                props.formValue.design = JSON.stringify(design);
+                delete (props.formValue.status_descricao);
+                if (props.readOnly) {
+                    props.update(props.formValue);
+                } else {
+                    props.create(props.formValue);
+                }
+            }
+        });
 
-    useEffect(() => {
-        if(campos.length){
-            campos.map((campo) => {
-                props.change(`${campo.id}_${campo.campo}`, campo.valor);
-            });
+    }
+
+    const onLoad = () => {
+        debugger;
+        editorRef.current.editor.setDisplayMode('web');
+        editorRef.current.editor.setTranslations({ 'pt-BR': translate });
+        editorRef.current.editor.setLocale('pt-BR');
+
+        if (props.formValue.design) {
+            const templateJson = JSON.parse(props.formValue.design);
+            editorRef.current.editor.loadDesign(templateJson);
         }
-    },[campos]);
+    }
+
+    const onReady = () => {
+        // editor is ready
+        // console.log('onReady');
+    };
 
     return (
         <form name={props.name}>
             <CardBodyScroll>
-                { campos.map((campo) => {
-                    return <Field
-                        key={campo.id}
-                        name={`${campo.id}_${campo.campo}`}
-                        component={LabelAndInput}
-                        label={campo.campo}
-                        cols='12'
-                    />
-                })
-                }
+                <Field
+                    name='id'
+                    component={LabelAndInput}
+                    readOnly={true}
+                    label='Código'
+                    cols='12'
+                    placeholder='Automático'
+                    wCol="135"
+                />
+
+                <Field
+                    name='titulo'
+                    maxLength={100}
+                    component={LabelAndInput}
+                    label='Título'
+                    cols='12'
+                    placeholder='Informe o título'
+                    validate={required}
+                />
+
+                <EmailEditor
+                    ref={editorRef}
+                    onLoad={onLoad}
+                    onReady={onReady}
+                />
 
             </CardBodyScroll>
             <CardFooter>
-                <Button type='button' className={props.submitClass} icon='check' label={props.submitLabel} onClick={() => props.update(props.formValue)} />
+                <Button type='button' className={props.submitClass} icon='check' label={props.submitLabel} onClick={salvarConfiguracao} />
                 <Button type='button' className='secondary' icon='times' label='Cancelar' onClick={() => { props.init() }} />
             </CardFooter>
         </form>
@@ -65,5 +99,5 @@ const mapStateToProps = state => ({
     list: state.configuracaoCad.list,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ init, update, getList }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ init, update, getList, create }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(ConfiguracaoForm);

@@ -34,28 +34,31 @@ module.exports = function (route) {
 
     route.put('/lead/:id', (req, res, next) => {
         const id = req.params.id;
-        const tags = req.body.tags;
+        const tags = req.body.tags ?? [];
         delete req.body.tags;
         const values = req.body;
         knex('lead')
             .where('id', id)
             .update(values)
             .then(() => {
-                knex('tag_lead')
-                    .where('id_lead', id)
-                    .delete()
-                    .then(() => {
-                        let valuesTag = [];
-                        tags.map((tag) => {
-                            valuesTag.push({ id_lead: id, id_tag: tag.id });
-                        });
+                if (tags) {
+                    knex('tag_lead')
+                        .where('id_lead', id)
+                        .delete()
+                        .then(() => {
+                            let valuesTag = [];
+                            tags.map((tag) => {
+                                valuesTag.push({ id_lead: id, id_tag: tag.id });
+                            });
 
-                        knex('tag_lead')
-                            .insert(valuesTag)
-                            .then(() => {
-                                return res.status(200).send(true);
-                            })
-                    })
+                            knex('tag_lead')
+                                .insert(valuesTag)
+                                .then(() => {
+                                    return res.status(200).send(true);
+                                })
+                        })
+                    return res.status(200).send(true);
+                }
             })
             .catch(function (error) { }, next);
     });
@@ -75,7 +78,7 @@ module.exports = function (route) {
     });
 
     route.post('/lead/', (req, res, next) => {
-        const tags = req.body.tags;
+        const tags = req.body.tags ?? [];
         delete req.body.tags;
         const values = req.body;
 
@@ -88,10 +91,10 @@ module.exports = function (route) {
                 });
 
                 knex('tag_lead')
-                .insert(valuesTag)
-                .then(() => {
-                    return res.status(200).send(true);
-                })
+                    .insert(valuesTag)
+                    .then(() => {
+                        return res.status(200).send(true);
+                    })
             })
             .catch(function (error) {
                 return res.status(500);

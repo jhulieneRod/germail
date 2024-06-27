@@ -8,8 +8,8 @@ const cad_key = 'CAD_CONFIGURACAO';
 
 const INITIAL_VALUES = () => ({});
 
-export function getList(tipo) {
-    const request = axios.get(`${BASE_URL}/configuracao/${tipo}`);
+export function getList() {
+    const request = axios.get(`${BASE_URL}/configuracao/`);
     
     return {
         type: 'CONFIGURACAO_FETCHED',
@@ -17,11 +17,32 @@ export function getList(tipo) {
     }
 }
 
+export function getHtml(callback = () => {}) {
+    axios.get(`${consts.OAPI_URL}/homepage/`)
+    .then((resp) => {
+        debugger;
+        callback(resp.data);
+    })
+}
+
+export function create(values, dispatch, props) {
+    return submit(values, 'post', 'Configuração Incluída com Sucesso!');
+}
+
 export function update(values, dispatch, props) {
+    return submit(values, 'put')
+}
+
+export function remove(values) {
+    return submit(values, 'delete', 'Configuração Deletada com Sucesso!');
+}
+
+function submit(values, method, msg = 'Configuração Alterada com sucesso!') {
     return dispatch => {
-        axios['put'](`${BASE_URL}/configuracao/`, values)
+        const id = values.id ? values.id : ''
+        axios[method](`${BASE_URL}/configuracao/${id}`, values)
             .then(resp => {
-                tsSuccess('Configuração alterada com sucesso.')
+                tsSuccess(msg);
                 dispatch(init())
             })
             .catch(e => {
@@ -31,9 +52,20 @@ export function update(values, dispatch, props) {
     }
 }
 
-export function init() {
+export function showUpdate(Configuracao) {
     return [
-        showTabs(['tabConfEmail'], cad_key),
-        selectTab('tabConfEmail', cad_key)
+        showTabs(['tabUpdateConfiguracao'], cad_key),
+        selectTab('tabUpdateConfiguracao', cad_key),
+        initialize('configuracaoForm', Configuracao) 
+    ]
+}
+
+export function init(isPost = false) {
+
+    return [
+        showTabs(['tabListConfiguracao', 'tabCreateConfiguracao'], cad_key),
+        selectTab((isPost) ? 'tabCreateConfiguracao' : 'tabListConfiguracao', cad_key),
+        getList(),
+        initialize('configuracaoForm', INITIAL_VALUES())
     ]
 }

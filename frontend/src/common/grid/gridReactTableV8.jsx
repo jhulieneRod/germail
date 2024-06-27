@@ -461,7 +461,7 @@ function Pagination({ table, props, loading }) {
                 </select>
             </If>
             <BtnRefresh btnAtualizar={props.btnAtualizar} updateListFn={props.updateListFn} />
-            <RowsCount table={table} loading />
+            <RowsCount table={table} loading={(loading !== undefined) ? loading : false} />
             {/* {loading ? 'Loading...' : null} */}
         </div>
     )

@@ -8,9 +8,10 @@ import TabsHeader from '../common/tab/tabsHeader'
 import TabsContent from '../common/tab/tabsContent'
 import TabHeader from '../common/tab/tabHeader'
 import TabContent from '../common/tab/tabContent'
-import { init } from './configuracaoActions';
+import { init, update, create } from './configuracaoActions';
 
-import ConfiguracaoForm from './configuracaoForm';
+import Form from './configuracaoForm';
+import List from './configuracaoList';
 
 const Configuracao = props => {
 
@@ -24,11 +25,20 @@ const Configuracao = props => {
         <Content>
             <Tabs>
                 <TabsHeader>
-                    <TabHeader label='E-mail' icon='gear' target='tabConfEmail' getParent={parentID} />
+                    <TabHeader label='Listar' icon='list' target='tabListConfiguracao' getParent={parentID} />
+
+                    <TabHeader label='Incluir' icon='plus' target='tabCreateConfiguracao' getParent={parentID} />
+                    <TabHeader label='Alterar' icon='pencil-alt' target='tabUpdateConfiguracao' getParent={parentID} />
                 </TabsHeader>
                 <TabsContent>
-                    <TabContent id='tabConfEmail' getParent={parentID}>
-                        <ConfiguracaoForm submitClass='primary' submitLabel='Salvar' name="configuracaoEmailForm" tipo={1} />
+                    <TabContent id='tabListConfiguracao' getParent={parentID}>
+                        <List />
+                    </TabContent>
+                    <TabContent id='tabCreateConfiguracao' getParent={parentID}>
+                        <Form name='tabCreateConfiguracaoForm' onSubmit={props.create} submitClass='primary' submitLabel='Salvar' />
+                    </TabContent>
+                    <TabContent id='tabUpdateConfiguracao' getParent={parentID}>
+                        <Form name='tabUpdateConfiguracaoForm' onSubmit={props.update} readOnly={true} submitClass='primary' submitLabel='Salvar' />
                     </TabContent>
                 </TabsContent>
             </Tabs>
@@ -36,5 +46,5 @@ const Configuracao = props => {
     )
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ init }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, update, create }, dispatch)
 export default connect(null, mapDispatchToProps)(Configuracao)

@@ -27,6 +27,9 @@ module.exports = function (server) {
     const TrackingEmailService = require('../api/email/trackingEmailService');
     openApi.get('/abriu-email', TrackingEmailService.gravaAbriuEmail);
 
+    const HomePage = require('../api/homepage/homepageService');
+    openApi.get('/homepage', HomePage.getHomePage);
+
     const ImportacaoLeadService = require('../api/lead/importacaoLeadService');
     openApi.post('/importa-lead', ImportacaoLeadService.importaLead);
 }

@@ -38,7 +38,7 @@ class Menu extends Component {
                 <ul className="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
 
                     <MenuItemClick name='dashboardgeral' label='Dashboard' icon='tachometer-alt' onClick={this.props.addTabs}> <Dashboard /> </MenuItemClick>
-                    {/* <MenuItemClick name='configuracao' label='Configuração' icon='gear' onClick={(e, menu) => { this.props.addTabs(e, menu, <CadConfiguracao />) }}> </MenuItemClick> */}
+                    <MenuItemClick name='configuracao' label='Configuração' icon='gear' onClick={(e, menu) => { this.props.addTabs(e, menu, <CadConfiguracao />) }}> </MenuItemClick>
                     <MenuTree label='Cadastro' name='subcadastrogeral' icon='edit'>
                         <MenuItemClick name='cadtag' label='Tag' icon='' onClick={(e, menu) => { this.props.addTabs(e, menu, <CadTag />) }} />
                         <MenuItemClick name='cadlead' label='Lead' icon='' onClick={(e, menu) => { this.props.addTabs(e, menu, <CadLead />) }} />
