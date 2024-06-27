@@ -75,10 +75,23 @@ module.exports = function (route) {
     });
 
     route.post('/lead/', (req, res, next) => {
+        const tags = req.body.tags;
+        delete req.body.tags;
+        const values = req.body;
+
         knex('lead')
-            .insert(req.body)
-            .then(() => {
-                return res.status(200).send(true);
+            .insert(values)
+            .then((dados) => {
+                let valuesTag = [];
+                tags.map((tag) => {
+                    valuesTag.push({ id_lead: dados[0], id_tag: tag.id });
+                });
+
+                knex('tag_lead')
+                .insert(valuesTag)
+                .then(() => {
+                    return res.status(200).send(true);
+                })
             })
             .catch(function (error) {
                 return res.status(500);
