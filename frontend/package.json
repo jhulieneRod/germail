@@ -3,7 +3,7 @@
     "version": "1.1.02",
     "description": "GerMail",
     "private": true,
-    "homepage": "http://previasite.com/login",
+    "homepage": "http://previasite.com/",
     "proxy": "http://77.37.69.246:14105/",
     "dependencies": {
         "@tanstack/react-query": "^5.17.1",
