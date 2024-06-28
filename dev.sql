@@ -1,151 +1,634 @@
--- CREATE DATABASE IF NOT EXISTS germail CHARACTER SET utf8 COLLATE utf8_general_ci;
--- USE germail;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Tempo de geração: 28/06/2024 às 14:37
+-- Versão do servidor: 10.11.7-MariaDB-cll-lve
+-- Versão do PHP: 7.2.34
 
--- Tabela Lead
-CREATE TABLE lead (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    status TINYINT NOT NULL
-);
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- Tabela Tag
-CREATE TABLE tag (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    descricao TEXT,
-    cor VARCHAR(7)
-);
 
--- Tabela Email
-CREATE TABLE email (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    assunto VARCHAR(255) NOT NULL,
-    conteudo TEXT,
-    design TEXT,
-    status TINYINT NOT NULL
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
--- Tabela Log_Destinatario_Email
-CREATE TABLE log_destinatario_email (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_email INT NOT NULL,
-    id_lead INT NOT NULL,
-    datahora DATETIME NOT NULL,
-    acao TINYINT NOT NULL,
-    FOREIGN KEY (id_email) REFERENCES email(id),
-    FOREIGN KEY (id_lead) REFERENCES lead(id)
-);
+--
+-- Banco de dados: `u776607379_geremail`
+--
 
--- Tabela Tag_Lead
-CREATE TABLE tag_lead (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_lead INT NOT NULL,
-    id_tag INT NOT NULL,
-    FOREIGN KEY (id_lead) REFERENCES lead(id),
-    FOREIGN KEY (id_tag) REFERENCES tag(id)
-);
+-- --------------------------------------------------------
 
--- Tabela Sequencia_Lead
-CREATE TABLE sequencia_lead (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    seq INT NOT NULL,
-    id_lead INT NOT NULL,
-    id_sequencia INT NOT NULL,
-    FOREIGN KEY (id_lead) REFERENCES lead(id),
-    FOREIGN KEY (id_sequencia) REFERENCES sequencia(id)
-);
+--
+-- Estrutura para tabela `destinatario_email`
+--
 
--- Tabela Sequencia
-CREATE TABLE sequencia (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    ultima_alteracao DATETIME NOT NULL
-);
+CREATE TABLE `destinatario_email` (
+  `id` int(11) NOT NULL,
+  `id_tag` int(11) NOT NULL,
+  `id_email` int(11) NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabela Etapa
-CREATE TABLE etapa (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    tipo TINYINT NOT NULL,
-    id_passo INT,
-    FOREIGN KEY (id_passo) REFERENCES passo(id)
-);
+--
+-- Despejando dados para a tabela `destinatario_email`
+--
 
--- Tabela Gatilho
-CREATE TABLE gatilho (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    descricao TEXT
-);
+INSERT INTO `destinatario_email` (`id`, `id_tag`, `id_email`, `status`) VALUES
+(5, 6, 8, 1),
+(6, 6, 6, 1),
+(9, 8, 9, 1),
+(10, 6, 9, 1),
+(11, 9, 6, 1),
+(13, 8, 11, 1),
+(14, 10, 5, 1),
+(16, 11, 12, 1),
+(17, 12, 13, 1);
 
--- Tabela Gatilho_Condicao
-CREATE TABLE gatilho_condicao (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_gatilho INT NOT NULL,
-    id_condicao INT NOT NULL,
-    FOREIGN KEY (id_gatilho) REFERENCES gatilho(id),
-    FOREIGN KEY (id_condicao) REFERENCES condicao(id)
-);
+-- --------------------------------------------------------
 
--- Tabela Condicao
-CREATE TABLE condicao (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL
-);
+--
+-- Estrutura para tabela `email`
+--
 
--- Tabela Acao
-CREATE TABLE acao (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    seq INT NOT NULL,
-    titulo VARCHAR(255) NOT NULL,
-    descricao TEXT
-);
+CREATE TABLE `email` (
+  `id` int(11) NOT NULL,
+  `assunto` varchar(100) DEFAULT NULL,
+  `conteudo` text NOT NULL,
+  `design` longtext NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- Tabela Atraso
-CREATE TABLE atraso (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL
-);
+--
+-- Despejando dados para a tabela `email`
+--
 
--- Tabela Etapa_Conteudo
-CREATE TABLE etapa_conteudo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_etapa INT NOT NULL,
-    id_conteudo INT NOT NULL,
-    valor TEXT,
-    id_passo INT,
-    tipo_condicao TINYINT NOT NULL,
-    FOREIGN KEY (id_etapa) REFERENCES etapa(id),
-    FOREIGN KEY (id_passo) REFERENCES passo(id)
-);
+INSERT INTO `email` (`id`, `assunto`, `conteudo`, `design`, `status`) VALUES
+(5, 'Teste Email 1', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }\n    </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table id=\"u_body\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\">Heading</h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">This is a new Text block. Change the text.</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->\n<div align=\"center\">\n  <!--[if mso]><v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"\" style=\"height:37px; v-text-anchor:middle; width:110px;\" arcsize=\"11%\"  stroke=\"f\" fillcolor=\"#053144\"><w:anchorlock/><center style=\"color:#FFFFFF;\"><![endif]-->\n    <a href=\"\" target=\"_blank\" class=\"v-button\" style=\"box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #053144; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;\">\n      <span style=\"display:block;padding:10px 20px;line-height:120%;\"><span style=\"line-height: 16.8px;\">Button Text</span></span>\n    </a>\n    <!--[if mso]></center></v:roundrect><![endif]-->\n</div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_heading\":1,\"u_content_text\":1,\"u_content_button\":1},\"body\":{\"id\":\"oMclE7QU6w\",\"rows\":[{\"id\":\"Mrg2lYLUih\",\"cells\":[1],\"columns\":[{\"id\":\"DR1wTkP7k3\",\"contents\":[{\"id\":\"IR0uOh5dCr\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"Heading\"}},{\"id\":\"TmM3D9sHwm\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">This is a new Text block. Change the text.</p>\"}},{\"id\":\"9F_FzGvV2D\",\"type\":\"button\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"href\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"buttonColors\":{\"color\":\"#FFFFFF\",\"backgroundColor\":\"#053144\",\"hoverColor\":\"#FFFFFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"size\":{\"autoWidth\":true,\"width\":\"100%\"},\"fontSize\":\"14px\",\"textAlign\":\"center\",\"lineHeight\":\"120%\",\"padding\":\"10px 20px\",\"border\":{},\"borderRadius\":\"4px\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_button_1\",\"htmlClassNames\":\"u_content_button\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span style=\\\"line-height: 16.8px;\\\">Button Text</span>\",\"calculatedWidth\":110,\"calculatedHeight\":37}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(6, 'Testando email', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }\n    </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table id=\"u_body\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Aqui é o Título do email</span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <table height=\"0px\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n    <tbody>\n      <tr style=\"vertical-align: top\">\n        <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n          <span>&#160;</span>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr>\n    <td style=\"padding-right: 0px;padding-left: 0px;\" align=\"center\">\n      \n      <img align=\"center\" border=\"0\" src=\"https://static.vecteezy.com/system/resources/previews/019/016/921/original/i-love-you-free-png.png\" alt=\"\" title=\"\" style=\"outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 480px;\" width=\"480\"/>\n      \n    </td>\n  </tr>\n</table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">Realizando uma avaliação de transmissão de correio eletrônico para os destinatários com um botão para acessar o Google.</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->\n<div align=\"center\">\n  <!--[if mso]><v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"https://google.com\" style=\"height:37px; v-text-anchor:middle; width:130px;\" arcsize=\"11%\"  stroke=\"f\" fillcolor=\"#3AAEE0\"><w:anchorlock/><center style=\"color:#FFFFFF;\"><![endif]-->\n    <a href=\"https://google.com\" target=\"_blank\" class=\"v-button\" style=\"box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #3AAEE0; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;\">\n      <span style=\"display:block;padding:10px 20px;line-height:120%;\"><span style=\"line-height: 16.8px;\">Abrir o Google</span></span>\n    </a>\n    <!--[if mso]></center></v:roundrect><![endif]-->\n</div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_heading\":1,\"u_content_divider\":1,\"u_content_button\":1,\"u_content_text\":1,\"u_content_image\":1},\"body\":{\"id\":\"UEyarDnIzh\",\"rows\":[{\"id\":\"zqF6mbPoR-\",\"cells\":[1],\"columns\":[{\"id\":\"b75RO-jZRx\",\"contents\":[{\"id\":\"Nz7AsVCuzo\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Aqui é o Título do email</span>\"}},{\"id\":\"AhTuLJp3d0\",\"type\":\"divider\",\"values\":{\"width\":\"100%\",\"border\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#BBBBBB\"},\"textAlign\":\"center\",\"containerPadding\":\"10px\",\"anchor\":\"\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_divider_1\",\"htmlClassNames\":\"u_content_divider\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"OOgaHpDSnj\",\"type\":\"image\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"src\":{\"url\":\"https://static.vecteezy.com/system/resources/previews/019/016/921/original/i-love-you-free-png.png\",\"width\":1920,\"height\":1920},\"textAlign\":\"center\",\"altText\":\"\",\"action\":{\"name\":\"web\",\"attrs\":{\"href\":\"{{href}}\",\"target\":\"{{target}}\"},\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_image_1\",\"htmlClassNames\":\"u_content_image\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"5oWtHtGf5f\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">Realizando uma avaliação de transmissão de correio eletrônico para os destinatários com um botão para acessar o Google.</p>\"}},{\"id\":\"3z06ISFDB_\",\"type\":\"button\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"href\":{\"name\":\"web\",\"values\":{\"href\":\"https://google.com\",\"target\":\"_blank\"},\"attrs\":{\"href\":\"{{href}}\",\"target\":\"{{target}}\"}},\"buttonColors\":{\"color\":\"#FFFFFF\",\"backgroundColor\":\"#3AAEE0\",\"hoverColor\":\"#FFFFFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"size\":{\"autoWidth\":true,\"width\":\"100%\"},\"fontSize\":\"14px\",\"textAlign\":\"center\",\"lineHeight\":\"120%\",\"padding\":\"10px 20px\",\"border\":{},\"borderRadius\":\"4px\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_button_1\",\"htmlClassNames\":\"u_content_button\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span style=\\\"line-height: 16.8px;\\\">Abrir o Google</span>\",\"calculatedWidth\":130,\"calculatedHeight\":37}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(7, 'Teste', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Teste</span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <table height=\"0px\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n    <tbody>\n      <tr style=\"vertical-align: top\">\n        <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n          <span>&#160;</span>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr>\n    <td style=\"padding-right: 0px;padding-left: 0px;\" align=\"center\">\n      \n      <img align=\"center\" border=\"0\" src=\"https://assets.unlayer.com/projects/0/1715875287233-Certificado%20Capacitação%20-%20JCI%20Agrolândia.png\" alt=\"\" title=\"\" style=\"outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 480px;\" width=\"480\"/>\n      \n    </td>\n  </tr>\n</table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_image\":1,\"u_content_menu\":1,\"u_content_heading\":1,\"u_content_divider\":1},\"body\":{\"id\":\"hLzdjD4DhS\",\"rows\":[{\"id\":\"UmOT3wwrUN\",\"cells\":[1],\"columns\":[{\"id\":\"LhKOP7xMfv\",\"contents\":[{\"id\":\"Zwe-qM1PhQ\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Teste</span>\"}},{\"id\":\"dXFD9i_Aim\",\"type\":\"divider\",\"values\":{\"width\":\"100%\",\"border\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#BBBBBB\"},\"textAlign\":\"center\",\"containerPadding\":\"10px\",\"anchor\":\"\",\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_divider_1\",\"htmlClassNames\":\"u_content_divider\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"b6KrReD9Tx\",\"type\":\"image\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"src\":{\"url\":\"https://assets.unlayer.com/projects/0/1715875287233-Certificado%20Capacitação%20-%20JCI%20Agrolândia.png\",\"width\":2000,\"height\":1414},\"textAlign\":\"center\",\"altText\":\"\",\"action\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_image_1\",\"htmlClassNames\":\"u_content_image\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1);
+INSERT INTO `email` (`id`, `assunto`, `conteudo`, `design`, `status`) VALUES
+(8, 'Teste email novo', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }\n    </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table id=\"u_body\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Título email</span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <table height=\"0px\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n    <tbody>\n      <tr style=\"vertical-align: top\">\n        <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n          <span>&#160;</span>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">Aqui podemos montar o layout do email do jeito que preferirmos</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->\n<div align=\"center\">\n  <!--[if mso]><v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"\" style=\"height:37px; v-text-anchor:middle; width:110px;\" arcsize=\"11%\"  stroke=\"f\" fillcolor=\"#cb15d6\"><w:anchorlock/><center style=\"color:#FFFFFF;\"><![endif]-->\n    <a href=\"\" target=\"_blank\" class=\"v-button\" style=\"box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #cb15d6; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;\">\n      <span style=\"display:block;padding:10px 20px;line-height:120%;\"><span style=\"line-height: 16.8px;\">Button Text</span></span>\n    </a>\n    <!--[if mso]></center></v:roundrect><![endif]-->\n</div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_heading\":1,\"u_content_divider\":1,\"u_content_text\":1,\"u_content_button\":1},\"body\":{\"id\":\"Y9VXzp_RXg\",\"rows\":[{\"id\":\"fPY1diAWcW\",\"cells\":[1],\"columns\":[{\"id\":\"ulAozxpEd9\",\"contents\":[{\"id\":\"fi_vk8-oGK\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Título email</span>\"}},{\"id\":\"Nj7m5kILTB\",\"type\":\"divider\",\"values\":{\"width\":\"100%\",\"border\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#BBBBBB\"},\"textAlign\":\"center\",\"containerPadding\":\"10px\",\"anchor\":\"\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_divider_1\",\"htmlClassNames\":\"u_content_divider\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"w8sXW17g08\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">Aqui podemos montar o layout do email do jeito que preferirmos</p>\"}},{\"id\":\"o2P_XVsssO\",\"type\":\"button\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"href\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"buttonColors\":{\"color\":\"#FFFFFF\",\"backgroundColor\":\"#cb15d6\",\"hoverColor\":\"#FFFFFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"size\":{\"autoWidth\":true,\"width\":\"100%\"},\"fontSize\":\"14px\",\"textAlign\":\"center\",\"lineHeight\":\"120%\",\"padding\":\"10px 20px\",\"border\":{},\"borderRadius\":\"4px\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_button_1\",\"htmlClassNames\":\"u_content_button\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span style=\\\"line-height: 16.8px;\\\">Button Text</span>\",\"calculatedWidth\":110,\"calculatedHeight\":37}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(9, 'Teste Email Tracking', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Rastreamento de abertura de e-mail</span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <table height=\"0px\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n    <tbody>\n      <tr style=\"vertical-align: top\">\n        <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\">\n          <span>&#160;</span>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_heading\":1,\"u_content_divider\":1,\"u_content_image\":1,\"u_content_html\":1},\"body\":{\"id\":\"FHyRUqpDSh\",\"rows\":[{\"id\":\"aBRWj5A8D1\",\"cells\":[1],\"columns\":[{\"id\":\"Tdeki_hDdm\",\"contents\":[{\"id\":\"z-1aIs2cC4\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Rastreamento de abertura de e-mail</span>\"}},{\"id\":\"Gb9BSowpJZ\",\"type\":\"divider\",\"values\":{\"width\":\"100%\",\"border\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#BBBBBB\"},\"textAlign\":\"center\",\"containerPadding\":\"10px\",\"anchor\":\"\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_divider_1\",\"htmlClassNames\":\"u_content_divider\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(10, 'Teste sistema', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">teste</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_text\":1},\"body\":{\"id\":\"sBHY9W81jO\",\"rows\":[{\"id\":\"HtUwDu6vky\",\"cells\":[1],\"columns\":[{\"id\":\"7y3v5OAhN8\",\"contents\":[{\"id\":\"DmdcZUBMzl\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">teste</p>\"}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1);
+INSERT INTO `email` (`id`, `assunto`, `conteudo`, `design`, `status`) VALUES
+(11, 'E-mail Template Black Friday', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #ffffff; } #u_body a { color: #0000ee; text-decoration: underline; }\n    </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #f7f8f9;color: #ffffff\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table id=\"u_body\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #f7f8f9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #f7f8f9;\"><![endif]-->\n    \n  \n  \n    <!--[if gte mso 9]>\n      <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;\">\n        <tr>\n          <td background=\"https://cdn.templates.unlayer.com/assets/1711536825458-bg.png\" valign=\"top\" width=\"100%\">\n      <v:rect xmlns:v=\"urn:schemas-microsoft-com:vml\" fill=\"true\" stroke=\"false\" style=\"width: 500px;\">\n        <v:fill type=\"frame\" src=\"https://cdn.templates.unlayer.com/assets/1711536825458-bg.png\" /><v:textbox style=\"mso-fit-shape-to-text:true\" inset=\"0,0,0,0\">\n      <![endif]-->\n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-image: url(\'https://cdn.templates.unlayer.com/assets/1711536825458-bg.png\');background-repeat: no-repeat;background-position: center top;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-image: url(\'https://cdn.templates.unlayer.com/assets/1711536825458-bg.png\');background-repeat: no-repeat;background-position: center top;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:71px 10px 0px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; color: #ce0202; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span><span><span><span><span><span><span><span><span>Black Friday</span></span></span></span></span></span></span></span></span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:0px 10px 61px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; color: #ce0202; line-height: 140%; text-align: center; word-wrap: break-word; font-size: 40px; font-weight: 400;\"><span><span><span><span><span><span><span><span>Descontos Especiais!</span></span></span></span></span></span></span></span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:55px 10px 10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr>\n    <td style=\"padding-right: 0px;padding-left: 0px;\" align=\"center\">\n      \n      <img align=\"center\" border=\"0\" src=\"https://cdn.templates.unlayer.com/assets/1711536112447-image%204.png\" alt=\"\" title=\"\" style=\"outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 81%;max-width: 388.8px;\" width=\"388.8\"/>\n      \n    </td>\n  </tr>\n</table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:35px 50px 5px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; color: #160101; line-height: 140%; text-align: center; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\"><span style=\"color: #000000; line-height: 19.6px;\">Lorem ipsum dolor sit amet, con sectetur adipiscing elit, sed do eiusmod tempor in cididunt ut labore et dolore. Lorem ipsum dolor sit amet, con sectetur adipiscing elit, sed <span style=\"line-height: 19.6px;\">do</span> eiusmod.</span></p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px 10px 45px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->\n<div align=\"center\">\n  <!--[if mso]><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"center\" bgcolor=\"#ec3a3a\" style=\"padding:10px 20px;\" valign=\"top\"><![endif]-->\n    <a href=\"\" target=\"_blank\" class=\"v-button\" style=\"box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ec3a3a; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:30%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;\">\n      <span style=\"display:block;padding:10px 20px;line-height:120%;\"><span style=\"line-height: 16.8px;\">Comprar Agora</span></span>\n    </a>\n    <!--[if mso]></td></tr></table><![endif]-->\n</div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n    <!--[if gte mso 9]>\n      </v:textbox></v:rect>\n    </td>\n    </tr>\n    </table>\n    <![endif]-->\n    \n\n\n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 8px; line-height: 140%; text-align: center; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\"><span style=\"color: #000000; line-height: 11.2px;\">Se desejar não receber mais e-mails, <span style=\"text-decoration: underline; line-height: 11.2px;\">clique aqui</span>!</span></p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":4,\"u_row\":4,\"u_content_html\":1,\"u_content_heading\":4,\"u_content_divider\":1,\"u_content_image\":1,\"u_content_text\":2,\"u_content_button\":1},\"body\":{\"id\":\"FfEVzO4L-7\",\"rows\":[{\"id\":\"-XY4-QixZy\",\"cells\":[1],\"columns\":[{\"id\":\"i2d8oSzXX5\",\"contents\":[{\"id\":\"JOlZJYNDgi\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"71px 10px 0px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"color\":\"#ce0202\",\"textAlign\":\"center\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_2\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span><span><span><span><span><span><span><span><span>Black Friday</span></span></span></span></span></span></span></span></span>\"}},{\"id\":\"cl7H_VGjFl\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"0px 10px 61px\",\"headingType\":\"h1\",\"fontSize\":\"40px\",\"color\":\"#ce0202\",\"textAlign\":\"center\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_4\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span><span><span><span><span><span><span><span>Descontos Especiais!</span></span></span></span></span></span></span></span>\"}},{\"id\":\"xm12OXBTkh\",\"type\":\"image\",\"values\":{\"containerPadding\":\"55px 10px 10px\",\"anchor\":\"\",\"src\":{\"url\":\"https://cdn.templates.unlayer.com/assets/1711536112447-image%204.png\",\"width\":906,\"height\":965,\"autoWidth\":false,\"maxWidth\":\"81%\"},\"textAlign\":\"center\",\"altText\":\"\",\"action\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_image_1\",\"htmlClassNames\":\"u_content_image\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"xGcR21wQH6\",\"type\":\"text\",\"values\":{\"containerPadding\":\"35px 50px 5px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"color\":\"#160101\",\"textAlign\":\"center\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\"><span style=\\\"color: #000000; line-height: 19.6px;\\\">Lorem ipsum dolor sit amet, con sectetur adipiscing elit, sed do eiusmod tempor in cididunt ut labore et dolore. Lorem ipsum dolor sit amet, con sectetur adipiscing elit, sed <span style=\\\"line-height: 19.6px;\\\">do</span> eiusmod.</span></p>\"}},{\"id\":\"dd-oyW426J\",\"type\":\"button\",\"values\":{\"containerPadding\":\"10px 10px 45px\",\"anchor\":\"\",\"href\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"buttonColors\":{\"color\":\"#FFFFFF\",\"backgroundColor\":\"#ec3a3a\",\"hoverColor\":\"#FFFFFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"size\":{\"autoWidth\":false,\"width\":\"30%\"},\"fontSize\":\"14px\",\"textAlign\":\"center\",\"lineHeight\":\"120%\",\"padding\":\"10px 20px\",\"border\":{},\"borderRadius\":\"4px\",\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_button_1\",\"htmlClassNames\":\"u_content_button\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span style=\\\"line-height: 16.8px;\\\">Comprar Agora</span>\",\"calculatedWidth\":144,\"calculatedHeight\":37}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_3\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"https://cdn.templates.unlayer.com/assets/1711536825458-bg.png\",\"width\":600,\"height\":885,\"fullWidth\":true,\"size\":\"custom\",\"repeat\":\"no-repeat\",\"position\":\"top-center\",\"customPosition\":[\"50%\",\"0%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"_meta\":{\"htmlID\":\"u_row_3\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"Sjc-k2Hevu\",\"cells\":[1],\"columns\":[{\"id\":\"bvX0wAfLgS\",\"contents\":[{\"id\":\"6-zATClE4T\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"8px\",\"textAlign\":\"center\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_2\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\"><span style=\\\"color: #000000; line-height: 11.2px;\\\">Se desejar não receber mais e-mails, <span style=\\\"text-decoration: underline; line-height: 11.2px;\\\">clique aqui</span>!</span></p>\"}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_4\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"padding\":\"0px\",\"anchor\":\"\",\"_meta\":{\"htmlID\":\"u_row_4\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#ffffff\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#f7f8f9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(12, 'teste', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; }\n    </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table id=\"u_body\" style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><table width=\"100%\"><tr><td><![endif]-->\n    <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Olá!</span></h1>\n  <!--[if mso]></td></tr></table><![endif]-->\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">Olá! Como você está? Apenas estamos fazendo um teste.</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">Olá! Como você está? Apenas estamos fazendo um teste.</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->\n<div align=\"center\">\n  <!--[if mso]><v:roundrect xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" href=\"https://pay.hotmart.com/B15306701S?checkoutMode=10&bid=1717183264223\" style=\"height:37px; v-text-anchor:middle; width:109px;\" arcsize=\"11%\"  stroke=\"f\" fillcolor=\"#3AAEE0\"><w:anchorlock/><center style=\"color:#FFFFFF;\"><![endif]-->\n    <a href=\"https://pay.hotmart.com/B15306701S?checkoutMode=10&bid=1717183264223\" target=\"_self\" class=\"v-button\" style=\"box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #3AAEE0; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;\">\n      <span style=\"display:block;padding:10px 20px;line-height:120%;\">Vamos, lá?</span>\n    </a>\n    <!--[if mso]></center></v:roundrect><![endif]-->\n</div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":2,\"u_row\":2,\"u_content_text\":2,\"u_content_heading\":1,\"u_content_button\":1},\"body\":{\"id\":\"iVS70QNc5v\",\"rows\":[{\"id\":\"58kUTNf8YN\",\"cells\":[1],\"columns\":[{\"id\":\"F8aPAXtaj2\",\"contents\":[{\"id\":\"qrWH5ftbQI\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Olá!</span>\"}},{\"id\":\"OffgUlZPcX\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">Olá! Como você está? Apenas estamos fazendo um teste.</p>\"}},{\"id\":\"tIDzgAygrQ\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_2\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">Olá! Como você está? Apenas estamos fazendo um teste.</p>\"}},{\"id\":\"jo9a0glBJE\",\"type\":\"button\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"href\":{\"name\":\"web\",\"attrs\":{\"href\":\"{{href}}\",\"target\":\"{{target}}\"},\"values\":{\"href\":\"https://pay.hotmart.com/B15306701S?checkoutMode=10&bid=1717183264223\",\"target\":\"_self\"}},\"buttonColors\":{\"color\":\"#FFFFFF\",\"backgroundColor\":\"#3AAEE0\",\"hoverColor\":\"#FFFFFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"size\":{\"autoWidth\":true,\"width\":\"100%\"},\"fontSize\":\"14px\",\"textAlign\":\"center\",\"lineHeight\":\"120%\",\"padding\":\"10px 20px\",\"border\":{},\"borderRadius\":\"4px\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_button_1\",\"htmlClassNames\":\"u_content_button\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"Vamos, lá?\",\"calculatedWidth\":109,\"calculatedHeight\":37}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1),
+(13, 'Seu primeiro email ', '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n<head>\n<!--[if gte mso 9]>\n<xml>\n  <o:OfficeDocumentSettings>\n    <o:AllowPNG/>\n    <o:PixelsPerInch>96</o:PixelsPerInch>\n  </o:OfficeDocumentSettings>\n</xml>\n<![endif]-->\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta name=\"x-apple-disable-message-reformatting\">\n  <!--[if !mso]><!--><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><!--<![endif]-->\n  <title></title>\n  \n    <style type=\"text/css\">\n      @media only screen and (min-width: 520px) {\n  .u-row {\n    width: 500px !important;\n  }\n  .u-row .u-col {\n    vertical-align: top;\n  }\n\n  .u-row .u-col-100 {\n    width: 500px !important;\n  }\n\n}\n\n@media (max-width: 520px) {\n  .u-row-container {\n    max-width: 100% !important;\n    padding-left: 0px !important;\n    padding-right: 0px !important;\n  }\n  .u-row .u-col {\n    min-width: 320px !important;\n    max-width: 100% !important;\n    display: block !important;\n  }\n  .u-row {\n    width: 100% !important;\n  }\n  .u-col {\n    width: 100% !important;\n  }\n  .u-col > div {\n    margin: 0 auto;\n  }\n}\nbody {\n  margin: 0;\n  padding: 0;\n}\n\ntable,\ntr,\ntd {\n  vertical-align: top;\n  border-collapse: collapse;\n}\n\np {\n  margin: 0;\n}\n\n.ie-container table,\n.mso-container table {\n  table-layout: fixed;\n}\n\n* {\n  line-height: inherit;\n}\n\na[x-apple-data-detectors=\'true\'] {\n  color: inherit !important;\n  text-decoration: none !important;\n}\n\ntable, td { color: #000000; } </style>\n  \n  \n\n</head>\n\n<body class=\"clean-body u_body\" style=\"margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F7F8F9;color: #000000\">\n  <!--[if IE]><div class=\"ie-container\"><![endif]-->\n  <!--[if mso]><div class=\"mso-container\"><![endif]-->\n  <table style=\"border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n  <tbody>\n  <tr style=\"vertical-align: top\">\n    <td style=\"word-break: break-word;border-collapse: collapse !important;vertical-align: top\">\n    <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td align=\"center\" style=\"background-color: #F7F8F9;\"><![endif]-->\n    \n  \n  \n<div class=\"u-row-container\" style=\"padding: 0px;background-color: transparent\">\n  <div class=\"u-row\" style=\"margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\">\n    <div style=\"border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;\">\n      <!--[if (mso)|(IE)]><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td style=\"padding: 0px;background-color: transparent;\" align=\"center\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"width:500px;\"><tr style=\"background-color: transparent;\"><![endif]-->\n      \n<!--[if (mso)|(IE)]><td align=\"center\" width=\"500\" style=\"width: 500px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\" valign=\"top\"><![endif]-->\n<div class=\"u-col u-col-100\" style=\"max-width: 320px;min-width: 500px;display: table-cell;vertical-align: top;\">\n  <div style=\"height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\">\n  <!--[if (!mso)&(!IE)]><!--><div style=\"box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;\"><!--<![endif]-->\n  \n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n  <div style=\"font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;\">\n    <p style=\"line-height: 140%;\">This is a new Text block. Change the text.</p>\n  </div>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<table style=\"font-family:arial,helvetica,sans-serif;\" role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\">\n  <tbody>\n    <tr>\n      <td style=\"overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;\" align=\"left\">\n        \n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n  <tr>\n    <td style=\"padding-right: 0px;padding-left: 0px;\" align=\"center\">\n      \n      <img align=\"center\" border=\"0\" src=\"https://cdn.tools.unlayer.com/image/placeholder.png\" alt=\"\" title=\"\" style=\"outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 480px;\" width=\"480\"/>\n      \n    </td>\n  </tr>\n</table>\n\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->\n  </div>\n</div>\n<!--[if (mso)|(IE)]></td><![endif]-->\n      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->\n    </div>\n  </div>\n  </div>\n  \n\n\n    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->\n    </td>\n  </tr>\n  </tbody>\n  </table>\n  <!--[if mso]></div><![endif]-->\n  <!--[if IE]></div><![endif]-->\n</body>\n\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_text\":1,\"u_content_image\":1},\"body\":{\"id\":\"gh4aqEdU4W\",\"rows\":[{\"id\":\"vn_aqj8NJq\",\"cells\":[1],\"columns\":[{\"id\":\"jJF0YGs98T\",\"contents\":[{\"id\":\"fAhx6fQf-z\",\"type\":\"text\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"fontSize\":\"14px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_text_1\",\"htmlClassNames\":\"u_content_text\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<p style=\\\"line-height: 140%;\\\">This is a new Text block. Change the text.</p>\"}},{\"id\":\"wdUVE96RTf\",\"type\":\"image\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"src\":{\"url\":\"https://cdn.tools.unlayer.com/image/placeholder.png\",\"width\":800,\"height\":200},\"textAlign\":\"center\",\"altText\":\"\",\"action\":{\"name\":\"web\",\"values\":{\"href\":\"\",\"target\":\"_blank\"}},\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_image_1\",\"htmlClassNames\":\"u_content_image\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"500px\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#000000\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#F7F8F9\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1);
 
--- Tabela Passo
-CREATE TABLE passo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_etapaIni INT,
-    id_proxEtapa INT,
-    FOREIGN KEY (id_etapaIni) REFERENCES etapa(id),
-    FOREIGN KEY (id_proxEtapa) REFERENCES etapa(id)
-);
+-- --------------------------------------------------------
 
--- Inserção de registros na tabela Gatilho
-INSERT INTO gatilho (id, titulo, descricao) VALUES
-(1, 'Data/Hora', 'Gatilho ativado por data ou hora'),
-(2, 'Tag Incluída', 'Gatilho ativado por inclusão de tag'),
-(3, 'Tag Removida', 'Gatilho ativado por remoção de tag'),
-(4, 'Novo Contato', 'Gatilho ativado por novo contato');
+--
+-- Estrutura para tabela `etapa`
+--
 
--- Inserção de registros na tabela Acao
-INSERT INTO acao (id, seq, titulo, descricao) VALUES
-(1, 1, 'Adicionar Tag', 'Ação de adicionar uma tag ao lead'),
-(2, 2, 'Remover Tag', 'Ação de remover uma tag do lead'),
-(3, 3, 'Desativar Lead', 'Ação de desativar um lead'),
-(4, 4, 'Ativar Lead', 'Ação de ativar um lead');
+CREATE TABLE `etapa` (
+  `id` varchar(300) NOT NULL,
+  `data` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Inserção de registros na tabela Atraso
-INSERT INTO atraso (id, tipo) VALUES
-(1, 'Segundos'), -- Segundos
-(2, 'Minutos'), -- Minutos
-(3, 'Horas'), -- Horas
-(4, 'Dias'); -- Dias
+--
+-- Despejando dados para a tabela `etapa`
+--
+
+INSERT INTO `etapa` (`id`, `data`) VALUES
+('0', '[]'),
+('1719017504390', NULL),
+('1719017998884', '5'),
+('1719018039670', '5'),
+('1719018370424', '[{\"tipo\":1,\"titulo\":\"Ação de Lead\",\"descricao\":\"Ativa Lead\",\"valor\":\"\",\"id\":\"acao_1719018378994\"}]'),
+('1719018434516', '[{\"tipo\":1,\"titulo\":\"Ação de Lead\",\"descricao\":\"Ativa Lead\",\"valor\":\"\",\"id\":\"acao_1719018438708\"}]'),
+('1719018764552', '[{\"tipo\":1,\"titulo\":\"Ação de Lead\",\"descricao\":\"Ativa Lead\",\"valor\":\"\",\"id\":\"acao_1719018776847\"},{\"tipo\":2,\"titulo\":\"Ação de Lead\",\"descricao\":\"Desativa Lead\",\"valor\":\"\",\"id\":\"acao_1719018826916\"}]'),
+('1719019977252', '{\"tipo\":3,\"condicoes\":[{\"id\":\"condicao_1719020288587\",\"tipo\":\"lead\",\"operador\":\"!=\",\"valor\":11}]}'),
+('1719020623863', '{\"valor\":\"80\",\"tipo\":1}'),
+('1719020874697', '7'),
+('initial_1719014312085', '[]'),
+('initial_1719014326940', '[]'),
+('initial_1719014377957', '[]'),
+('initial_1719014551086', '[]'),
+('initial_1719014602560', '[]'),
+('initial_1719014613713', '[]'),
+('initial_1719014613767', '[]'),
+('initial_1719014676761', '[]'),
+('initial_1719014676817', '[]'),
+('initial_1719014692379', '[]'),
+('initial_1719014692431', '[{\"tipo\":1,\"titulo\":\"Evento de Lead\",\"descricao\":\"Novo Lead Incluído\",\"valor\":\"\",\"id\":\"gatilho_1719014992390\"}]'),
+('initial_1719014752728', '[]'),
+('initial_1719014787600', '[]'),
+('initial_1719014787659', '[]'),
+('initial_1719014872099', '[]'),
+('initial_1719014885582', '[]'),
+('initial_1719014892023', '[]'),
+('initial_1719014903629', '[]'),
+('initial_1719014971962', '[]'),
+('initial_1719014976813', '[]'),
+('initial_1719015050009', '[]'),
+('initial_1719015053108', '[]'),
+('initial_1719015053182', '[]'),
+('initial_1719015392196', '[]'),
+('initial_1719015392257', '[{\"tipo\":4,\"titulo\":\"Evento de Lead\",\"descricao\":\"Tag Atribuída ao Lead\",\"valor\":12,\"id\":\"gatilho_1719016036818\"}]'),
+('initial_1719015405620', '[]'),
+('initial_1719015470284', '[]'),
+('initial_1719015553365', '[]'),
+('initial_1719241873146', '[{\"tipo\":1,\"titulo\":\"Evento de Lead\",\"descricao\":\"Novo Lead Incluído\",\"valor\":\"\",\"id\":\"gatilho_1719241880354\"}]'),
+('initial_1719285585107', '[{\"tipo\":4,\"titulo\":\"Evento de Lead\",\"descricao\":\"Tag Atribuída ao Lead\",\"valor\":\"\",\"id\":\"gatilho_1719285593740\"}]');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `fluxo`
+--
+
+CREATE TABLE `fluxo` (
+  `nodes` longtext DEFAULT NULL,
+  `edges` longtext DEFAULT NULL,
+  `id` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `fluxo`
+--
+
+INSERT INTO `fluxo` (`nodes`, `edges`, `id`) VALUES
+('[{\"id\":\"initial_1719014692431\",\"type\":\"initialNode\",\"position\":{\"x\":20,\"y\":20},\"data\":{\"functions\":{},\"content\":[]},\"deletable\":false,\"width\":300,\"height\":235,\"selected\":true,\"dragging\":false,\"positionAbsolute\":{\"x\":20,\"y\":20}}]', '[]', 'react_flow_1719014692321'),
+('[{\"id\":\"initial_1719015392257\",\"type\":\"initialNode\",\"position\":{\"x\":-236.63094839081356,\"y\":-298.5135884283146},\"data\":{\"functions\":{},\"content\":[]},\"deletable\":false,\"width\":300,\"height\":268,\"selected\":false,\"dragging\":false,\"positionAbsolute\":{\"x\":-236.63094839081356,\"y\":-298.5135884283146}},{\"id\":\"1719018039670\",\"type\":\"emailNode\",\"position\":{\"x\":168.85013868345175,\"y\":-258.55529668787415},\"data\":{\"functions\":{},\"content\":[]},\"width\":250,\"height\":159,\"selected\":false,\"dragging\":false,\"positionAbsolute\":{\"x\":168.85013868345175,\"y\":-258.55529668787415}},{\"id\":\"1719018764552\",\"type\":\"acaoNode\",\"position\":{\"x\":229.75895734815288,\"y\":-42.644037704413506},\"data\":{\"functions\":{},\"content\":[]},\"width\":250,\"height\":328,\"selected\":false,\"positionAbsolute\":{\"x\":229.75895734815288,\"y\":-42.644037704413506},\"dragging\":false},{\"id\":\"1719019977252\",\"type\":\"condicaoNode\",\"position\":{\"x\":654.8773155400809,\"y\":-335.3375484845663},\"data\":{\"functions\":{},\"content\":[]},\"width\":400,\"height\":265,\"selected\":false,\"positionAbsolute\":{\"x\":654.8773155400809,\"y\":-335.3375484845663},\"dragging\":false},{\"id\":\"1719020623863\",\"type\":\"atrasoNode\",\"position\":{\"x\":1133.2064269568027,\"y\":-271.20211071768676},\"data\":{\"functions\":{},\"content\":[]},\"width\":330,\"height\":155,\"selected\":false,\"positionAbsolute\":{\"x\":1133.2064269568027,\"y\":-271.20211071768676},\"dragging\":false},{\"id\":\"1719020874697\",\"type\":\"emailNode\",\"position\":{\"x\":1166.2526898761168,\"y\":-3.744425945222474},\"data\":{\"functions\":{},\"content\":[]},\"width\":250,\"height\":159,\"selected\":false,\"positionAbsolute\":{\"x\":1166.2526898761168,\"y\":-3.744425945222474},\"dragging\":false}]', '[{\"source\":\"initial_1719015392257\",\"sourceHandle\":\"initial\",\"target\":\"1719018039670\",\"targetHandle\":\"t\",\"id\":\"reactflow__edge-initial_1719015392257initial-1719018039670t\"},{\"source\":\"1719018039670\",\"sourceHandle\":\"cb\",\"target\":\"1719018764552\",\"targetHandle\":\"b\",\"id\":\"reactflow__edge-1719018039670cb-1719018764552b\"},{\"source\":\"1719019977252\",\"sourceHandle\":\"cb1\",\"target\":\"1719020623863\",\"targetHandle\":\"t\",\"id\":\"reactflow__edge-1719019977252cb1-1719020623863t\"},{\"source\":\"1719019977252\",\"sourceHandle\":\"cb2\",\"target\":\"1719020874697\",\"targetHandle\":\"t\",\"id\":\"reactflow__edge-1719019977252cb2-1719020874697t\"},{\"source\":\"1719018764552\",\"sourceHandle\":\"sb\",\"target\":\"1719019977252\",\"targetHandle\":\"t\",\"id\":\"reactflow__edge-1719018764552sb-1719019977252t\"}]', 'react_flow_1719015392148'),
+('[]', '[]', 'react_flow_1719021164683'),
+('[]', '[]', 'react_flow_1719241872562'),
+('[]', '[]', 'react_flow_1719285491987');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `homepage`
+--
+
+CREATE TABLE `homepage` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(400) NOT NULL,
+  `html` longtext NOT NULL,
+  `design` longtext NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `homepage`
+--
+
+INSERT INTO `homepage` (`id`, `titulo`, `html`, `design`, `status`) VALUES
+(1, 'Home', '<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n    <title></title>\n    <meta name=\"description\" content=\"\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    \n    \n      <style type=\"text/css\">\n        .u-row {\n  display: flex;\n  flex-wrap: nowrap;\n  margin-left: 0;\n  margin-right: 0;\n}\n\n.u-row .u-col {\n  position: relative;\n  width: 100%;\n  padding-right: 0;\n  padding-left: 0;\n}\n\n\n.u-row .u-col.u-col-100 {\n  flex: 0 0 100%;\n  max-width: 100%;\n}\n\n\n@media (max-width: 767px) {\n  .u-row:not(.no-stack) {\n    flex-wrap: wrap;\n  }\n\n  .u-row:not(.no-stack) .u-col {\n    flex: 0 0 100% !important;\n    max-width: 100% !important;\n  }\n}\n\nbody,html{padding:0;margin:0}html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}html{font-size:14px;-ms-overflow-style:scrollbar;-webkit-tap-highlight-color:rgba(0,0,0,0)}p{margin:0}form .error-field{-webkit-animation-name:shake;animation-name:shake;-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both}form .error-field input,form .error-field textarea{border-color:#a94442!important;color:#a94442!important}form .field-error{padding:5px 10px;font-size:14px;font-weight:700;position:absolute;top:-20px;right:10px}form .field-error:after{top:100%;left:50%;border:solid transparent;content:\" \";height:0;width:0;position:absolute;pointer-events:none;border-color:rgba(136,183,213,0);border-top-color:#ebcccc;border-width:5px;margin-left:-5px}form .spinner{margin:0 auto;width:70px;text-align:center}form .spinner>div{width:12px;height:12px;background-color:hsla(0,0%,100%,.5);margin:0 2px;border-radius:100%;display:inline-block;-webkit-animation:sk-bouncedelay 1.4s infinite ease-in-out both;animation:sk-bouncedelay 1.4s infinite ease-in-out both}form .spinner .bounce1{-webkit-animation-delay:-.32s;animation-delay:-.32s}form .spinner .bounce2{-webkit-animation-delay:-.16s;animation-delay:-.16s}@-webkit-keyframes sk-bouncedelay{0%,80%,to{-webkit-transform:scale(0)}40%{-webkit-transform:scale(1)}}@keyframes sk-bouncedelay{0%,80%,to{-webkit-transform:scale(0);transform:scale(0)}40%{-webkit-transform:scale(1);transform:scale(1)}}@-webkit-keyframes shake{0%,to{-webkit-transform:translateZ(0);transform:translateZ(0)}10%,30%,50%,70%,90%{-webkit-transform:translate3d(-10px,0,0);transform:translate3d(-10px,0,0)}20%,40%,60%,80%{-webkit-transform:translate3d(10px,0,0);transform:translate3d(10px,0,0)}}@keyframes shake{0%,to{-webkit-transform:translateZ(0);transform:translateZ(0)}10%,30%,50%,70%,90%{-webkit-transform:translate3d(-10px,0,0);transform:translate3d(-10px,0,0)}20%,40%,60%,80%{-webkit-transform:translate3d(10px,0,0);transform:translate3d(10px,0,0)}}@media (max-width:480px){.container{max-width:100%!important}}@media (min-width:481px) and (max-width:768px){.hide-tablet{display:none!important}}.container{width:100%;padding-right:0;padding-left:0;margin-right:auto;margin-left:auto}@media (min-width:576px){.container{max-width:540px}}@media (min-width:768px){.container{max-width:720px}}@media (min-width:992px){.container{max-width:960px}}@media (min-width:1200px){.container{max-width:1140px}}\n\na[onclick] {\n  cursor: pointer;\n}\nbody { font-family: arial,helvetica,sans-serif; font-size: 1rem; line-height: 1.5; color: #ffffff; background-color: #590cf2; } #u_body a { color: #0000ee; text-decoration: underline; } #u_body a:hover { color: #0000ee; text-decoration: underline; } #u_content_form_1 button:hover { color: #FFF !important; background-color: #3AAEE0 !important; } #u_content_form_1 input::placeholder { color: #000; opacity: 0.5; }\n      </style>\n    \n    \n  </head>\n  <body>\n    \n  <div id=\"u_body\" class=\"u_body\" style=\"min-height: 100vh;\">\n    \n  <div id=\"u_row_1\" class=\"u_row\" style=\"padding: 0px;\">\n    <div class=\"container\" style=\"max-width: 100%;margin: 0 auto;\">\n      <div class=\"u-row\">\n        \n<div id=\"u_column_1\" class=\"u-col u-col-100 u_column\" style=\"display:flex;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;\">\n  <div style=\"width: 100%;padding:0px;\">\n    \n  <div id=\"u_content_heading_1\" class=\"u_content_heading\" style=\"overflow-wrap: break-word;padding: 10px;\">\n    \n  <h1 style=\"margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;\"><span>Home</span></h1>\n\n  </div>\n\n  <div id=\"u_content_divider_1\" class=\"u_content_divider\" style=\"overflow-wrap: break-word;padding: 10px;\">\n    <div style=\"text-align:center;line-height:0\"><div style=\"border-top-width:1px;border-top-style:solid;border-top-color:#BBBBBB;width:100%;display:inline-block;line-height:1px;height:0px;vertical-align:middle\"> </div></div>\n  </div>\n\n  <div id=\"u_content_form_1\" class=\"u_content_form\" style=\"overflow-wrap: break-word;padding: 10px;\">\n    <div style=\"text-align:center\"><form action=\"\" method=\"GET\" style=\"display:inline-block;width:100%;box-sizing:border-box\" target=\"_self\"><div color=\"#000\" class=\"sc-eeDRCY efrsGq\"><div style=\"padding-bottom:10px\"><div style=\"text-align:left;color:#444;font-size:14px;padding:0px 0px 3px\"><label>Nome *</label></div><div style=\"position:relative\"><input type=\"text\" required=\"\" name=\"nome\" placeholder=\"Nome\" style=\"border-top-width:1px;border-top-style:solid;border-top-color:#CCC;border-left-width:1px;border-left-style:solid;border-left-color:#CCC;border-right-width:1px;border-right-style:solid;border-right-color:#CCC;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#CCC;border-radius:0px;padding:10px;color:#000;background-color:#FFF;font-size:12px;width:100%\"/></div></div></div><div color=\"#000\" class=\"sc-eeDRCY efrsGq\"><div style=\"padding-bottom:10px\"><div style=\"text-align:left;color:#444;font-size:14px;padding:0px 0px 3px\"><label>E-mail *</label></div><div style=\"position:relative\"><input type=\"email\" required=\"\" name=\"email\" placeholder=\"E-mail\" style=\"border-top-width:1px;border-top-style:solid;border-top-color:#CCC;border-left-width:1px;border-left-style:solid;border-left-color:#CCC;border-right-width:1px;border-right-style:solid;border-right-color:#CCC;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#CCC;border-radius:0px;padding:10px;color:#000;background-color:#FFF;font-size:12px;width:100%\"/></div></div></div><div style=\"text-align:center\"><button type=\"submit\" style=\"border:none;border-radius:4px;display:inline-block;text-align:center;overflow:hidden;cursor:pointer;text-decoration:none;padding:10px;margin:5px 0px 0px;font-size:14px;width:100%;color:#FFF;background-color:#3AAEE0\">Submit</button></div></form></div>\n  </div>\n\n  </div>\n</div>\n\n      </div>\n    </div>\n  </div>\n\n  </div>\n\n  </body>\n</html>\n', '{\"counters\":{\"u_column\":1,\"u_row\":1,\"u_content_heading\":1,\"u_content_divider\":1,\"u_content_form\":1},\"body\":{\"id\":\"EoVrTZcZXQ\",\"rows\":[{\"id\":\"novKElhSem\",\"cells\":[1],\"columns\":[{\"id\":\"BdZVan6arA\",\"contents\":[{\"id\":\"-xHtxPnEkk\",\"type\":\"heading\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"headingType\":\"h1\",\"fontSize\":\"22px\",\"textAlign\":\"left\",\"lineHeight\":\"140%\",\"linkStyle\":{\"inherit\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_heading_1\",\"htmlClassNames\":\"u_content_heading\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"text\":\"<span>Home</span>\"}},{\"id\":\"oQKPR5Rhe7\",\"type\":\"divider\",\"values\":{\"width\":\"100%\",\"border\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#BBBBBB\"},\"textAlign\":\"center\",\"containerPadding\":\"10px\",\"anchor\":\"\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_divider_1\",\"htmlClassNames\":\"u_content_divider\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}},{\"id\":\"VS6XCIsVL1\",\"type\":\"form\",\"values\":{\"containerPadding\":\"10px\",\"anchor\":\"\",\"action\":{\"method\":\"GET\",\"target\":\"_self\",\"url\":\"\"},\"fields\":[{\"type\":\"text\",\"name\":\"nome\",\"label\":\"Nome\",\"options\":\"\",\"placeholder_text\":\"Nome\",\"show_label\":true,\"required\":true,\"meta_data\":{}},{\"name\":\"email\",\"type\":\"email\",\"label\":\"E-mail\",\"placeholder_text\":\"E-mail\",\"show_label\":true,\"required\":true}],\"fieldBorder\":{\"borderTopWidth\":\"1px\",\"borderTopStyle\":\"solid\",\"borderTopColor\":\"#CCC\",\"borderLeftWidth\":\"1px\",\"borderLeftStyle\":\"solid\",\"borderLeftColor\":\"#CCC\",\"borderRightWidth\":\"1px\",\"borderRightStyle\":\"solid\",\"borderRightColor\":\"#CCC\",\"borderBottomWidth\":\"1px\",\"borderBottomStyle\":\"solid\",\"borderBottomColor\":\"#CCC\"},\"fieldBorderRadius\":\"0px\",\"fieldPadding\":\"10px\",\"fieldBackgroundColor\":\"#FFF\",\"fieldColor\":\"#000\",\"fieldFontSize\":\"12px\",\"formWidth\":{\"autoWidth\":false,\"width\":\"100%\"},\"formAlign\":\"center\",\"fieldDistance\":\"10px\",\"labelFontSize\":\"14px\",\"labelColor\":\"#444\",\"labelAlign\":\"left\",\"labelPadding\":\"0px 0px 3px\",\"buttonText\":\"Submit\",\"buttonColors\":{\"color\":\"#FFF\",\"backgroundColor\":\"#3AAEE0\",\"hoverColor\":\"#FFF\",\"hoverBackgroundColor\":\"#3AAEE0\"},\"buttonAlign\":\"center\",\"buttonWidth\":{\"autoWidth\":false,\"width\":\"100%\"},\"buttonFontSize\":\"14px\",\"buttonBorder\":{},\"buttonBorderRadius\":\"4px\",\"buttonPadding\":\"10px\",\"buttonMargin\":\"5px 0px 0px\",\"hideDesktop\":false,\"displayCondition\":null,\"_meta\":{\"htmlID\":\"u_content_form_1\",\"htmlClassNames\":\"u_content_form\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true,\"fieldWidth\":\"100%\"}}],\"values\":{\"backgroundColor\":\"\",\"padding\":\"0px\",\"border\":{},\"borderRadius\":\"0px\",\"_meta\":{\"htmlID\":\"u_column_1\",\"htmlClassNames\":\"u_column\"}}}],\"values\":{\"displayCondition\":null,\"columns\":false,\"backgroundColor\":\"\",\"columnsBackgroundColor\":\"\",\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\",\"customPosition\":[\"50%\",\"50%\"]},\"padding\":\"0px\",\"anchor\":\"\",\"hideDesktop\":false,\"_meta\":{\"htmlID\":\"u_row_1\",\"htmlClassNames\":\"u_row\"},\"selectable\":true,\"draggable\":true,\"duplicatable\":true,\"deletable\":true,\"hideable\":true}}],\"headers\":[],\"footers\":[],\"values\":{\"popupPosition\":\"center\",\"popupWidth\":\"600px\",\"popupHeight\":\"auto\",\"borderRadius\":\"10px\",\"contentAlign\":\"center\",\"contentVerticalAlign\":\"center\",\"contentWidth\":\"100%\",\"fontFamily\":{\"label\":\"Arial\",\"value\":\"arial,helvetica,sans-serif\"},\"textColor\":\"#ffffff\",\"popupBackgroundColor\":\"#FFFFFF\",\"popupBackgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"cover\",\"position\":\"center\"},\"popupOverlay_backgroundColor\":\"rgba(0, 0, 0, 0.1)\",\"popupCloseButton_position\":\"top-right\",\"popupCloseButton_backgroundColor\":\"#DDDDDD\",\"popupCloseButton_iconColor\":\"#000000\",\"popupCloseButton_borderRadius\":\"0px\",\"popupCloseButton_margin\":\"0px\",\"popupCloseButton_action\":{\"name\":\"close_popup\",\"attrs\":{\"onClick\":\"document.querySelector(\'.u-popup-container\').style.display = \'none\';\"}},\"backgroundColor\":\"#590cf2\",\"preheaderText\":\"\",\"linkStyle\":{\"body\":true,\"linkColor\":\"#0000ee\",\"linkHoverColor\":\"#0000ee\",\"linkUnderline\":true,\"linkHoverUnderline\":true},\"backgroundImage\":{\"url\":\"\",\"fullWidth\":true,\"repeat\":\"no-repeat\",\"size\":\"custom\",\"position\":\"center\"},\"_meta\":{\"htmlID\":\"u_body\",\"htmlClassNames\":\"u_body\"}}},\"schemaVersion\":16}', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `lead`
+--
+
+CREATE TABLE `lead` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT 1,
+  `importado` smallint(6) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Despejando dados para a tabela `lead`
+--
+
+INSERT INTO `lead` (`id`, `nome`, `email`, `status`, `importado`) VALUES
+(4, 'Jhuliene Rodrigues Agostinho', 'jhuliene.rodrigues@gmail.com', 1, 0),
+(5, 'Teste novo lead tag', 't3st3.em41l@gmail.com', 1, 0),
+(6, 'Novo lead', 'novoLead@gmail.com', 0, 0),
+(7, 'Lead Novo Teste Tag', 'jhuliene.rodrigues@gmail.com', 1, 0),
+(8, 'Alberto Silveira', 'albertosilveira.ifc@gmail.com', 1, 0),
+(11, 'Opa', 'albertosilveira2015@gmail.com', 1, 0),
+(12, 'Scheila', 'scheila.longen@gmail.com', 1, 0),
+(13, 'João Augusto', 'albertosilveira.ifc@gmail.com', 1, 0),
+(19, 'com tag', 'comtag@gmail.com', 1, 0);
+
+--
+-- Acionadores `lead`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_after_insert_lead` AFTER INSERT ON `lead` FOR EACH ROW BEGIN
+    INSERT INTO log_gatilho_lead (id_lead, tipo)
+    VALUES (NEW.id, 1);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `trg_after_update_lead_status` AFTER UPDATE ON `lead` FOR EACH ROW BEGIN
+    IF OLD.status != NEW.status THEN
+        IF NEW.status = 0 THEN
+            INSERT INTO log_gatilho_lead (id_lead, tipo)
+            VALUES (NEW.id, 2);
+        ELSEIF NEW.status = 1 THEN
+            INSERT INTO log_gatilho_lead (id_lead, tipo)
+            VALUES (NEW.id, 3);
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `log_destinatario_email`
+--
+
+CREATE TABLE `log_destinatario_email` (
+  `id` int(11) NOT NULL,
+  `id_email` int(11) NOT NULL,
+  `id_lead` int(11) NOT NULL,
+  `datahora` timestamp NOT NULL,
+  `acao` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `log_destinatario_email`
+--
+
+INSERT INTO `log_destinatario_email` (`id`, `id_email`, `id_lead`, `datahora`, `acao`) VALUES
+(1, 9, 4, '2024-05-31 01:16:38', '1'),
+(2, 9, 7, '2024-05-31 01:16:38', '1'),
+(3, 9, 4, '2024-05-31 01:17:50', '2'),
+(4, 9, 7, '2024-05-31 01:18:40', '2'),
+(5, 8, 7, '2024-05-31 02:18:56', '1'),
+(6, 8, 7, '2024-05-31 02:19:26', '2'),
+(7, 9, 7, '2024-05-31 02:22:47', '2'),
+(8, 9, 4, '2024-05-31 02:22:47', '2'),
+(9, 6, 5, '2024-05-31 08:54:59', '1'),
+(10, 6, 5, '2024-05-31 10:38:43', '1'),
+(11, 5, 8, '2024-05-31 14:46:29', '1'),
+(12, 5, 8, '2024-05-31 14:46:34', '2'),
+(13, 5, 8, '2024-05-31 14:46:42', '2'),
+(14, 5, 8, '2024-05-31 14:46:44', '2'),
+(15, 11, 4, '2024-05-31 14:51:05', '1'),
+(16, 11, 4, '2024-05-31 17:51:10', '2'),
+(17, 11, 4, '2024-05-31 17:51:10', '2'),
+(18, 11, 4, '2024-05-31 17:51:44', '2'),
+(19, 11, 4, '2024-05-31 17:51:46', '2'),
+(20, 11, 4, '2024-05-31 17:51:50', '2'),
+(21, 11, 4, '2024-05-31 17:52:00', '2'),
+(22, 11, 4, '2024-05-31 17:52:17', '2'),
+(23, 11, 4, '2024-05-31 17:52:51', '2'),
+(24, 11, 4, '2024-05-31 17:53:49', '2'),
+(25, 11, 4, '2024-05-31 17:55:58', '2'),
+(26, 11, 4, '2024-05-31 15:01:43', '1'),
+(27, 11, 4, '2024-05-31 18:01:59', '2'),
+(28, 11, 4, '2024-05-31 15:09:17', '1'),
+(29, 11, 4, '2024-05-31 18:10:00', '2'),
+(30, 11, 4, '2024-05-31 18:10:32', '2'),
+(31, 5, 11, '2024-05-31 18:17:54', '1'),
+(32, 5, 8, '2024-05-31 18:17:54', '1'),
+(33, 5, 11, '2024-05-31 18:17:58', '2'),
+(34, 5, 11, '2024-05-31 18:18:04', '2'),
+(35, 5, 11, '2024-05-31 18:18:06', '2'),
+(36, 5, 8, '2024-05-31 18:19:10', '2'),
+(37, 5, 11, '2024-05-31 18:19:40', '2'),
+(38, 12, 12, '2024-05-31 19:18:47', '1'),
+(39, 12, 12, '2024-05-31 19:18:52', '2'),
+(40, 12, 12, '2024-05-31 19:19:36', '2'),
+(41, 12, 12, '2024-05-31 19:23:04', '1'),
+(42, 12, 12, '2024-05-31 19:23:23', '2'),
+(43, 12, 12, '2024-05-31 19:24:17', '1'),
+(44, 12, 12, '2024-05-31 19:24:34', '2'),
+(45, 13, 13, '2024-05-31 20:01:56', '1'),
+(46, 13, 13, '2024-05-31 20:02:05', '2'),
+(47, 13, 13, '2024-05-31 20:22:13', '2'),
+(48, 13, 13, '2024-05-31 20:43:04', '2'),
+(49, 13, 13, '2024-05-31 20:43:07', '2'),
+(50, 11, 4, '2024-06-01 00:34:04', '2');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `log_gatilho_lead`
+--
+
+CREATE TABLE `log_gatilho_lead` (
+  `id` int(11) NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT 1,
+  `id_lead` int(11) NOT NULL,
+  `tipo` smallint(6) NOT NULL,
+  `id_tag` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `log_gatilho_lead`
+--
+
+INSERT INTO `log_gatilho_lead` (`id`, `status`, `id_lead`, `tipo`, `id_tag`) VALUES
+(1, 1, 14, 1, NULL),
+(2, 1, 15, 1, NULL),
+(3, 1, 16, 1, NULL),
+(4, 1, 17, 1, NULL),
+(5, 1, 18, 1, NULL),
+(6, 1, 19, 1, NULL),
+(7, 1, 19, 4, 6),
+(8, 1, 19, 4, 10),
+(9, 1, 19, 4, 12),
+(10, 1, 4, 2, NULL),
+(11, 1, 4, 3, NULL),
+(12, 1, 4, 2, NULL),
+(13, 1, 4, 3, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `passo`
+--
+
+CREATE TABLE `passo` (
+  `id` int(11) NOT NULL,
+  `id_etapaIni` int(11) DEFAULT NULL,
+  `id_proxEtapa` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `sequencia`
+--
+
+CREATE TABLE `sequencia` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `ultima_alteracao` datetime NOT NULL,
+  `fluxo` varchar(300) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `sequencia`
+--
+
+INSERT INTO `sequencia` (`id`, `nome`, `ultima_alteracao`, `fluxo`) VALUES
+(4, 'Nova Sequência', '2024-06-21 09:16:32', 'react_flow_1719015392148'),
+(6, 'TESTE ALBERTO', '2024-06-22 01:52:44', 'react_flow_1719021164683'),
+(8, 'Teste Scheila ', '2024-06-25 03:18:12', 'react_flow_1719285491987');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `sequencia_lead`
+--
+
+CREATE TABLE `sequencia_lead` (
+  `id` int(11) NOT NULL,
+  `seq` int(11) NOT NULL,
+  `id_lead` int(11) NOT NULL,
+  `id_sequencia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tag`
+--
+
+CREATE TABLE `tag` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(100) NOT NULL,
+  `descricao` varchar(100) DEFAULT NULL,
+  `cor` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Despejando dados para a tabela `tag`
+--
+
+INSERT INTO `tag` (`id`, `titulo`, `descricao`, `cor`) VALUES
+(6, 'Tag 00', 'Tag de email', '#e6028bff'),
+(8, 'Tag nova teste', 'tag de email teste', '#e815a9ff'),
+(9, 'teste', 'teste tag', '#2bcbe0ff'),
+(10, 'Educadores', NULL, '#808080ff'),
+(11, 'teste Scheila', NULL, '#959595ff'),
+(12, 'Educadores 2', NULL, '#8916f5ff');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tag_lead`
+--
+
+CREATE TABLE `tag_lead` (
+  `id` int(11) NOT NULL,
+  `id_lead` int(11) NOT NULL,
+  `id_tag` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `tag_lead`
+--
+
+INSERT INTO `tag_lead` (`id`, `id_lead`, `id_tag`) VALUES
+(16, 19, 6),
+(17, 19, 10),
+(18, 19, 12);
+
+--
+-- Acionadores `tag_lead`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_after_insert_tag_lead` AFTER INSERT ON `tag_lead` FOR EACH ROW BEGIN
+    INSERT INTO log_gatilho_lead (id_lead, tipo, id_tag)
+    VALUES (NEW.id_lead, 4, NEW.id_tag);
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `ativo` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Despejando dados para a tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `usuario`, `ativo`) VALUES
+(1, 'admin', 'admin@admin.com.br', '123456', 'admin', 1);
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `destinatario_email`
+--
+ALTER TABLE `destinatario_email`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `email`
+--
+ALTER TABLE `email`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `etapa`
+--
+ALTER TABLE `etapa`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `fluxo`
+--
+ALTER TABLE `fluxo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `homepage`
+--
+ALTER TABLE `homepage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `lead`
+--
+ALTER TABLE `lead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `log_destinatario_email`
+--
+ALTER TABLE `log_destinatario_email`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `log_gatilho_lead`
+--
+ALTER TABLE `log_gatilho_lead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `passo`
+--
+ALTER TABLE `passo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `sequencia`
+--
+ALTER TABLE `sequencia`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `sequencia_lead`
+--
+ALTER TABLE `sequencia_lead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `tag`
+--
+ALTER TABLE `tag`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `tag_lead`
+--
+ALTER TABLE `tag_lead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `destinatario_email`
+--
+ALTER TABLE `destinatario_email`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de tabela `email`
+--
+ALTER TABLE `email`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de tabela `homepage`
+--
+ALTER TABLE `homepage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `lead`
+--
+ALTER TABLE `lead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT de tabela `log_destinatario_email`
+--
+ALTER TABLE `log_destinatario_email`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT de tabela `log_gatilho_lead`
+--
+ALTER TABLE `log_gatilho_lead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de tabela `passo`
+--
+ALTER TABLE `passo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `sequencia`
+--
+ALTER TABLE `sequencia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `sequencia_lead`
+--
+ALTER TABLE `sequencia_lead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `tag`
+--
+ALTER TABLE `tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de tabela `tag_lead`
+--
+ALTER TABLE `tag_lead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de tabela `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

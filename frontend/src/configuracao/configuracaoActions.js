@@ -42,6 +42,9 @@ function submit(values, method, msg = 'Configuração Alterada com sucesso!') {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/configuracao/${id}`, values)
             .then(resp => {
+                if(method != 'delete'){
+                    atualizaIndex();
+                }
                 tsSuccess(msg);
                 dispatch(init())
             })
@@ -50,6 +53,12 @@ function submit(values, method, msg = 'Configuração Alterada com sucesso!') {
                 e.response.data.errors.forEach(error => tsError(error))
             })
     }
+}
+
+function atualizaIndex(){
+    axios.get(`${BASE_URL}/homepage/`).then((dados) =>{
+        
+    })
 }
 
 export function showUpdate(Configuracao) {
