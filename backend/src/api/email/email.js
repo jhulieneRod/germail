@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const knex = require('../../config/database');
 const DateFormat = require('date-fns');
+const env = require('../../.env');
+const consts = require('../../config/consts');
 
 const sendEmail = async (json) => {
 
@@ -9,14 +11,14 @@ const sendEmail = async (json) => {
         error: ''
     }
 
-    let usuario = 'jhuliene.rodrigues@gmail.com';
-    let senha = 'ceuu gjvb mnpm kqvi';
+    let usuario = env.usuario_email;
+    let senha = env.senha_email;
 
     if ((json.destinatario != '') && (json.destinatario != undefined)) {
 
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
+            host: env.host_email,
+            port: env.port_email,
             secure: true,
             logger: true,
             debug: true,
@@ -59,7 +61,7 @@ const sendEmail = async (json) => {
 
             let base64Dados = btoa(JSON.stringify(dados));
 
-            let imgTrack = `<img src="http://77.37.69.246:14105/germail/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
+            let imgTrack = `<img src="${consts.OAPI_URL}/abriu-email?dados=${base64Dados}" alt="." style="display:none;">`;
             mailOptions.html = json.conteudo.replace('</body>', `${imgTrack} </body>`);
             mailOptions.to = destinatarioEmail;
             let datahora = DateFormat.format(new Date(), 'yyyy-MM-dd HH:mm:ss');

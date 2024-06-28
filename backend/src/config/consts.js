@@ -1,4 +1,4 @@
 module.exports = {
 
-    OAPI_URL: 'http://localhost:14105/germail',
+    OAPI_URL: 'http://jradev.com:14105/germail',
 }
