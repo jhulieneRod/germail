@@ -2,8 +2,8 @@ const knex = require('knex')({
     client: 'mysql',
     connection: {
         host: 'localhost',
-        user: 'germail',
-        password: 'm5HtWbrSmtrjrJE',
+        user: 'root',
+        password: '',
         database: 'germail'
     }
 });
