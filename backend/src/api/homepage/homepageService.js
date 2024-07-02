@@ -1,4 +1,5 @@
 const knex = require('../../config/database');
+const fs = require('fs');
 
 const getHomePage = (req, res, next) => {
     const sqlCommand = `select 
@@ -11,7 +12,9 @@ const getHomePage = (req, res, next) => {
 
     knex.raw(sqlCommand, [])
     .then((dados) => {
-        return res.send(dados[0][0].html);
+        let html = dados[0][0].html;
+        fs.writeFileSync('../../home/index.html', html);
+        return res.send(true);
     })
     .catch(function (error) {
         return res.status(500);

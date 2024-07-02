@@ -18,10 +18,9 @@ export function getList() {
 }
 
 export function getHtml(callback = () => {}) {
-    axios.get(`${consts.OAPI_URL}/homepage/`)
+    axios.post(`${consts.OAPI_URL}/homepage/`)
     .then((resp) => {
-        debugger;
-        callback(resp.data);
+        // callback(resp.data);
     })
 }
 
@@ -56,9 +55,7 @@ function submit(values, method, msg = 'Configuração Alterada com sucesso!') {
 }
 
 function atualizaIndex(){
-    axios.get(`${BASE_URL}/homepage/`).then((dados) =>{
-        
-    })
+    axios.get(`${consts.OAPI_URL}/homepage/`);
 }
 
 export function showUpdate(Configuracao) {

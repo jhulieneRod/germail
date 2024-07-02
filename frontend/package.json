@@ -3,7 +3,8 @@
     "version": "1.1.02",
     "description": "GerMail",
     "private": true,
-    "homepage": "http://jradev.com/germail/login",
+    "homepage": "https://jradev.com/germail",
+    "proxy": "https://jradev.com:14105/",
     "dependencies": {
         "@tanstack/react-query": "^5.17.1",
         "@tanstack/react-table": "^8.11.2",

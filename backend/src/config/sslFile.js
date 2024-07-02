@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 // const config = require('./config');
-const PATH_SSL = '/home/veloxdp2com/ssl/';
+const PATH_SSL = '/src/ssl/';
 
 const getSSLFileData = (dirname,extension,filtroName) => {
     const directoryPath = path.join(PATH_SSL, dirname);
@@ -40,7 +40,7 @@ module.exports = function getSSLFile(filtroName = ''){
         keyPathName : '',
         success : false
     }
-    SSLFile.certFile =  getSSLFileData('certs','.crt',filtroName);
+    SSLFile.certFile =  getSSLFileData('certs','.cert',filtroName);
     
     filtroName = SSLFile.certFile.name.replace(filtroName+'_','');
     filtroName = filtroName.split('_');
